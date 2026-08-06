@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: lgu_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - lgu-network
+
+  mysql:
+    image: mysql:8.4
+    container_name: lgu_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lgu_pastpapers
+      MYSQL_USER: lgu
+      MYSQL_PASSWORD: lgu123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - lgu-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: lgu_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    networks:
+      - lgu-network
+
+volumes:
+  mysql_data:
+
+networks:
+  lgu-network:

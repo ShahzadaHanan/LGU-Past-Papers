@@ -1,4 +1,6 @@
-/public/uploads/
-/storage/
 /vendor/
+/storage/
+/public/uploads/
 /.env
+.DS_Store
+Thumbs.db
