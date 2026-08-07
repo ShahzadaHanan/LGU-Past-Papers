@@ -1,3 +1,6 @@
 <?php
 
-echo "<h1>LGU Past Papers Project</h1>";
+declare(strict_types=1);
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/app/bootstrap/app.php';
