@@ -1,0 +1,3 @@
+ALTER TABLE admins
+    ADD COLUMN failed_attempts TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER last_login,
+    ADD COLUMN locked_until TIMESTAMP NULL DEFAULT NULL AFTER failed_attempts;
