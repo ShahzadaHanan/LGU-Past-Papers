@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+<<<<<<< HEAD
 use Closure;
 use ReflectionClass;
 use ReflectionException;
@@ -79,5 +80,24 @@ class Container
         } catch (ReflectionException $e) {
             throw new \Exception($e->getMessage());
         }
+=======
+class Container
+{
+    private array $services = [];
+
+    public function set(string $key, mixed $service): void
+    {
+        $this->services[$key] = $service;
+    }
+
+    public function get(string $key): mixed
+    {
+        return $this->services[$key] ?? null;
+    }
+
+    public function has(string $key): bool
+    {
+        return isset($this->services[$key]);
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     }
 }

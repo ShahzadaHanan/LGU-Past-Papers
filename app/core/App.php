@@ -15,11 +15,15 @@ class App
 
     public function boot(): void
     {
+<<<<<<< HEAD
         $this->registerCoreServices();
+=======
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     }
 
     public function run(): void
     {
+<<<<<<< HEAD
         $router = $this->container->make(
             Router::class
         );
@@ -425,3 +429,12 @@ class App
         );
     }
 }
+=======
+    }
+
+    public function container(): Container
+    {
+        return $this->container;
+    }
+}
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705

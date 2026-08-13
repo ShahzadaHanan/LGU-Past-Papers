@@ -15,7 +15,11 @@
             "App\\": "app/"
         },
         "files": [
+<<<<<<< HEAD
             "app/bootstrap/helpers.php"
+=======
+            "app/helpers/helpers.php"
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
         ]
     }
 }

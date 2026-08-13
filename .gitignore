@@ -3,6 +3,10 @@
 /public/uploads/
 /.env
 .DS_Store
+<<<<<<< HEAD
 Thumbs.db
 /public/uploads/*
 !/public/uploads/.gitkeep
+=======
+Thumbs.db
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705

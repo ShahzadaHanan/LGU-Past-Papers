@@ -3,8 +3,12 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+<<<<<<< HEAD
     container_name: lgu_app_v2
     
+=======
+    container_name: lgu_app
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -17,7 +21,11 @@ services:
 
   mysql:
     image: mysql:8.4
+<<<<<<< HEAD
     container_name: lgu_mysql_v2
+=======
+    container_name: lgu_mysql
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -34,7 +42,11 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+<<<<<<< HEAD
     container_name: lgu_phpmyadmin_v2
+=======
+    container_name: lgu_phpmyadmin
+>>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     restart: unless-stopped
     environment:
       PMA_HOST: mysql
