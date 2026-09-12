@@ -37,6 +37,11 @@ class ContentBlockController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/content-blocks/create');
+            return;
+        }
+
         try {
             $this->service->createContentBlock($this->request->all());
             $this->session->flash('success', 'Content block created.');
@@ -59,6 +64,11 @@ class ContentBlockController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/content-blocks/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->updateContentBlock($id, $this->request->all());
             $this->session->flash('success', 'Content block updated.');
@@ -70,6 +80,11 @@ class ContentBlockController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/content-blocks');
+            return;
+        }
+
         $this->service->deleteContentBlock($id);
         $this->session->flash('success', 'Content block deleted.');
         $this->response->redirect('/admin/content-blocks');

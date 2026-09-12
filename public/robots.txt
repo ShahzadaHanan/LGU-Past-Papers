@@ -2,5 +2,9 @@ User-agent: *
 Disallow: /admin/
 Disallow: /login
 Disallow: /logout
+Disallow: /*?page=
+Disallow: /*?category=
 
+# Update this to your production APP_URL before launch — this file is
+# static and isn't templated from .env like the rest of the app.
 Sitemap: http://localhost:8080/sitemap.xml

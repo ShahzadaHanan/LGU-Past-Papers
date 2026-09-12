@@ -51,6 +51,11 @@ class PaperSubmissionController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/paper-submissions');
+            return;
+        }
+
         $this->service->delete($id);
         $this->session->flash('success', 'Submission deleted.');
         $this->response->redirect('/admin/paper-submissions');
@@ -58,6 +63,11 @@ class PaperSubmissionController extends Controller
 
     public function approve(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/paper-submissions');
+            return;
+        }
+
         $this->service->approve($id);
         $this->session->flash('success', 'Submission approved. Add the paper under Papers using the submitted image.');
         $this->response->redirect('/admin/paper-submissions');
@@ -65,6 +75,11 @@ class PaperSubmissionController extends Controller
 
     public function reject(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/paper-submissions');
+            return;
+        }
+
         $this->service->reject($id);
         $this->session->flash('success', 'Submission rejected.');
         $this->response->redirect('/admin/paper-submissions');

@@ -32,27 +32,39 @@ class SubDepartmentRepository
 
     public function create(array $data): bool
     {
-        return $this->db->query(
-            "INSERT INTO sub_departments (department_id, name, description) VALUES (:department_id, :name, :description)",
+        // Database::query() runs with PDO::ERRMODE_EXCEPTION, so reaching
+        // the return means the insert already succeeded — no need to
+        // (and no safe way to) re-execute or check rowCount() here.
+        $this->db->query(
+            "INSERT INTO sub_departments (department_id, name, slug, description, display_order, is_active)
+            VALUES (:department_id, :name, :slug, :description, :display_order, :is_active)",
             [
                 'department_id' => $data['department_id'],
                 'name' => $data['name'],
-                'description' => $data['description'] ?? null
+                'slug' => $data['slug'],
+                'description' => $data['description'] ?? null,
+                'display_order' => $data['display_order'] ?? 0,
+                'is_active' => $data['is_active'] ?? 1,
             ]
-        )->rowCount() > 0;
+        );
+
+        return true;
     }
 
     public function update(int $id, array $data): bool
     {
-        return $this->db->query(
-            "UPDATE sub_departments SET department_id = :department_id, name = :name, description = :description WHERE id = :id",
+        $this->db->query(
+            "UPDATE sub_departments SET department_id = :department_id, name = :name, slug = :slug, description = :description WHERE id = :id",
             [
                 'id' => $id,
                 'department_id' => $data['department_id'],
                 'name' => $data['name'],
+                'slug' => $data['slug'],
                 'description' => $data['description'] ?? null
             ]
-        )->rowCount() > 0;
+        );
+
+        return true;
     }
 
     public function delete(int $id): bool

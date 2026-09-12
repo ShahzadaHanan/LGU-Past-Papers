@@ -37,6 +37,11 @@ class SiteSettingController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/site-settings/create');
+            return;
+        }
+
         try {
             $this->service->createSiteSetting($this->request->all());
             $this->session->flash('success', 'Setting created.');
@@ -59,6 +64,11 @@ class SiteSettingController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/site-settings/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->updateSiteSetting($id, $this->request->all());
             $this->session->flash('success', 'Setting updated.');
@@ -70,6 +80,11 @@ class SiteSettingController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/site-settings');
+            return;
+        }
+
         $this->service->deleteSiteSetting($id);
         $this->session->flash('success', 'Setting deleted.');
         $this->response->redirect('/admin/site-settings');

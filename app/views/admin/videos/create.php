@@ -7,6 +7,16 @@
 <option value="">Select category</option>
 <?php foreach ($categories as $c): ?><option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->name, ENT_QUOTES, 'UTF-8') ?></option><?php endforeach; ?>
 </select></div>
+<div class="form-group"><label>Department</label>
+<select id="department_select">
+<option value="">Select department</option>
+<?php foreach ($departments as $d): ?><option value="<?= (int) $d['id'] ?>"><?= htmlspecialchars($d['name'], ENT_QUOTES, 'UTF-8') ?></option><?php endforeach; ?>
+</select></div>
+<div class="form-group"><label>Degree Program</label>
+<select name="sub_department_id" id="sub_department_select">
+<option value="">Select department first</option>
+</select></div>
+<div class="form-group"><label>Subject</label><input type="text" name="subject_name" id="subject_input" placeholder="e.g. Data Structures & Algorithms"></div>
 <div class="form-group"><label>Title</label><input type="text" name="title" required></div>
 <div class="form-group"><label>YouTube URL</label><input type="url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required></div>
 <div class="form-group"><label>Description</label><textarea name="description" rows="4"></textarea></div>
@@ -16,3 +26,6 @@
 <a class="btn-secondary" href="/admin/videos">Cancel</a>
 </form>
 </div>
+<script>
+window.SUB_DEPARTMENTS = <?= json_encode(array_map(fn($sd) => ['id' => $sd->id, 'department_id' => $sd->department_id, 'name' => $sd->name], $subDepartments), JSON_UNESCAPED_UNICODE) ?>;
+</script>

@@ -16,6 +16,23 @@ class FileUploadService
         'application/pdf'
     ];
 
+    /** Maps a verified MIME type to its extension — never trust the
+     * client-supplied filename's extension for what gets saved to disk. */
+    private array $imageExtensions=[
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+    ];
+
+    private int $maxSize;
+
+    public function __construct()
+    {
+        $config = require ROOT_PATH . '/app/config/upload.php';
+
+        $this->maxSize = $config['max_size'] ?? (5 * 1024 * 1024);
+    }
+
     public function image(
         array $file,
         string $directory
@@ -29,11 +46,17 @@ class FileUploadService
             );
         }
 
+        if($file['size'] > $this->maxSize){
+            throw new \RuntimeException(
+                sprintf('Image exceeds the %dMB upload limit.', (int) ($this->maxSize / 1024 / 1024))
+            );
+        }
+
+        $mime = mime_content_type($file['tmp_name']);
+
         if(
             !in_array(
-                mime_content_type(
-                    $file['tmp_name']
-                ),
+                $mime,
                 $this->allowedImages,
                 true
             )
@@ -43,10 +66,7 @@ class FileUploadService
             );
         }
 
-        $extension=pathinfo(
-            $file['name'],
-            PATHINFO_EXTENSION
-        );
+        $extension = $this->imageExtensions[$mime];
 
         $filename=uniqid(
             '',
@@ -77,6 +97,19 @@ class FileUploadService
         '/'.$filename;
     }
 
+    /**
+     * Alias used by public-facing "attach an image" flows (e.g. the paper
+     * submission form) that don't need to distinguish image vs document.
+     */
+    public function upload(
+        array $file,
+        string $directory
+    ):string{
+
+        return $this->image($file, $directory);
+
+    }
+
     public function document(
         array $file,
         string $directory
@@ -87,6 +120,12 @@ class FileUploadService
         ){
             throw new \RuntimeException(
                 'Upload failed.'
+            );
+        }
+
+        if($file['size'] > $this->maxSize){
+            throw new \RuntimeException(
+                sprintf('Document exceeds the %dMB upload limit.', (int) ($this->maxSize / 1024 / 1024))
             );
         }
 

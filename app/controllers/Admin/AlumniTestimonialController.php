@@ -25,7 +25,7 @@ class AlumniTestimonialController extends Controller
     public function index(): void
     {
         $this->render('admin/alumni_testimonials/index', [
-            'title' => 'Alumni Testimonials',
+            'title' => 'Alumni',
             'items' => $this->service->getAll(),
         ], 'admin');
     }
@@ -37,6 +37,11 @@ class AlumniTestimonialController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/alumni-testimonials/create');
+            return;
+        }
+
         try {
             $this->service->create($this->request->all(), $this->request->file('photo'));
             $this->session->flash('success', 'Testimonial created.');
@@ -59,6 +64,11 @@ class AlumniTestimonialController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/alumni-testimonials/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->update($id, $this->request->all(), $this->request->file('photo'));
             $this->session->flash('success', 'Testimonial updated.');
@@ -70,6 +80,11 @@ class AlumniTestimonialController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/alumni-testimonials');
+            return;
+        }
+
         $this->service->delete($id);
         $this->session->flash('success', 'Testimonial deleted.');
         $this->response->redirect('/admin/alumni-testimonials');

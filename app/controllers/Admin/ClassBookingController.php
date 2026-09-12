@@ -37,6 +37,11 @@ class ClassBookingController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/class-bookings/create');
+            return;
+        }
+
         try {
             $this->service->create($this->request->all());
             $this->session->flash('success', 'Booking created.');
@@ -59,6 +64,11 @@ class ClassBookingController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/class-bookings/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->update($id, $this->request->all());
             $this->session->flash('success', 'Booking updated.');
@@ -70,6 +80,11 @@ class ClassBookingController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/class-bookings');
+            return;
+        }
+
         $this->service->delete($id);
         $this->session->flash('success', 'Booking deleted.');
         $this->response->redirect('/admin/class-bookings');
@@ -77,6 +92,11 @@ class ClassBookingController extends Controller
 
     public function updateStatus(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/class-bookings');
+            return;
+        }
+
         $this->service->updateStatus($id, (string) $this->request->input('status', 'new'));
         $this->session->flash('success', 'Status updated.');
         $this->response->redirect('/admin/class-bookings');

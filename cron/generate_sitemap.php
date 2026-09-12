@@ -34,10 +34,11 @@ foreach ($staticPages as $page) {
 }
 
 // 1. Departments URLs
-$departments = $db->fetchAll("SELECT slug FROM departments WHERE is_active = 1");
+$departments = $db->fetchAll("SELECT slug, updated_at FROM departments WHERE is_active = 1");
 foreach ($departments as $dept) {
     $xml .= "  <url>\n";
     $xml .= "    <loc>" . htmlspecialchars($appUrl . '/department/' . $dept['slug']) . "</loc>\n";
+    $xml .= "    <lastmod>" . date('Y-m-d', strtotime($dept['updated_at'])) . "</lastmod>\n";
     $xml .= "    <changefreq>weekly</changefreq>\n";
     $xml .= "    <priority>0.7</priority>\n";
     $xml .= "  </url>\n";
@@ -45,7 +46,7 @@ foreach ($departments as $dept) {
 
 // 2. Sub-Departments (Degrees) URLs
 $degrees = $db->fetchAll("
-    SELECT sd.slug as degree_slug, d.slug as dept_slug 
+    SELECT sd.slug as degree_slug, sd.updated_at, d.slug as dept_slug
     FROM sub_departments sd
     JOIN departments d ON sd.department_id = d.id
     WHERE sd.is_active = 1 AND d.is_active = 1
@@ -53,6 +54,7 @@ $degrees = $db->fetchAll("
 foreach ($degrees as $deg) {
     $xml .= "  <url>\n";
     $xml .= "    <loc>" . htmlspecialchars($appUrl . '/department/' . $deg['dept_slug'] . '/' . $deg['degree_slug']) . "</loc>\n";
+    $xml .= "    <lastmod>" . date('Y-m-d', strtotime($deg['updated_at'])) . "</lastmod>\n";
     $xml .= "    <changefreq>weekly</changefreq>\n";
     $xml .= "    <priority>0.6</priority>\n";
     $xml .= "  </url>\n";

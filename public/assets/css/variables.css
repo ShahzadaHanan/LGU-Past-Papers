@@ -1,20 +1,23 @@
 /* ==========================================================================
-   LGU Past Papers Portal - Shared Design Tokens
-   Palette derived from Lahore Garrison University's official green & white
-   identity. Import this file first on every page (public, auth, admin).
+   LGU Past Papers Portal — Shared Design Tokens
+   Palette pulled from Lahore Garrison University's own live brand CSS
+   (admissions.lgu.edu.pk): --green:#0d3e02, --yellow:#fdbf1e, Poppins.
+   Import this file first on every page (public, auth, admin).
    ========================================================================== */
 
 :root {
-    /* Brand green (garrison green) */
-    --primary-color: #0f6b3e;
-    --primary-light: #1a9e5c;
-    --primary-dark: #0a4a2a;
+    /* Garrison green — LGU's real primary brand color */
+    --primary-color: #0d3e02;
+    --primary-light: #1a6b0a;
+    --primary-dark: #082a01;
     --primary-contrast: #ffffff;
 
-    /* Secondary / accent */
-    --secondary-color: #0b3d2e;
-    --accent-color: #d4af37;
-    /* muted gold accent, complements garrison green */
+    /* Gold — LGU's real accent color (seal ribbon, focus states) */
+    --accent-color: #fdbf1e;
+    --accent-dark: #d9a300;
+    --accent-contrast: #1a2417;
+
+    --secondary-color: #082a01;
 
     /* Status colors */
     --success-color: #16a34a;
@@ -22,42 +25,66 @@
     --warning-color: #d97706;
     --info-color: #0284c7;
 
-    /* Light mode surface colors */
-    --bg-color: #f4f9f6;
+    /* Light mode surface colors — warm cream, not stark white */
+    --bg-color: #faf8f2;
     --bg-card: #ffffff;
     --bg-elevated: #ffffff;
-    --text-color: #14251d;
-    --text-muted: #5b6f65;
-    --border-color: #dce8e1;
-    --shadow: 0 4px 6px -1px rgb(15 107 62 / 0.08), 0 2px 4px -2px rgb(15 107 62 / 0.08);
-    --glass-bg: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(220, 232, 225, 0.6);
+    --text-color: #1a2417;
+    --text-muted: #5c6b57;
+    --border-color: #e4ddc9;
+    --shadow: 0 4px 6px -1px rgb(13 62 2 / 0.08), 0 2px 4px -2px rgb(13 62 2 / 0.08);
+    --shadow-lg: 0 20px 40px -12px rgb(13 62 2 / 0.25);
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(228, 221, 201, 0.6);
 
     --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    /* Spacing scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4.5rem;
+
+    /* LGU's own real body typeface (admissions.lgu.edu.pk --body-font) */
+    --font-sans: 'Poppins', system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
+
+/* Breakpoints (documented for consistent use in each stylesheet's own
+   media queries — CSS custom properties can't be read inside @media). */
+/* sm: 640px | md: 768px | lg: 1024px | xl: 1280px */
 
 [data-theme="dark"] {
-    --primary-color: #1a9e5c;
-    --primary-light: #34c07c;
-    --primary-dark: #0f6b3e;
+    --primary-color: #1a6b0a;
+    --primary-light: #2f9414;
+    --primary-dark: #0d3e02;
+    --accent-color: #fdbf1e;
+    --accent-dark: #e8ac00;
 
-    --bg-color: #0d1712;
-    --bg-card: #142620;
-    --bg-elevated: #172b23;
-    --text-color: #eaf5ef;
-    --text-muted: #93a89c;
-    --border-color: #23392f;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.35), 0 2px 4px -2px rgb(0 0 0 / 0.35);
-    --glass-bg: rgba(20, 38, 32, 0.85);
-    --glass-border: rgba(35, 57, 47, 0.6);
+    --bg-color: #0d1509;
+    --bg-card: #172312;
+    --bg-elevated: #1c2a16;
+    --text-color: #f2f5ee;
+    --text-muted: #a3b096;
+    --border-color: #2a3a22;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 20px 40px -12px rgb(0 0 0 / 0.55);
+    --glass-bg: rgba(23, 35, 18, 0.88);
+    --glass-border: rgba(42, 58, 34, 0.6);
 }
 
-/* Theme toggle button — shared across public site, auth, and admin */
+/* Theme toggle button — shared across public site, auth, and admin.
+   Hidden for now: the real LGU green palette doesn't translate to an
+   acceptable dark theme yet. The button, its CSS and site.js's toggle
+   logic are all left intact — delete this one rule to bring it back. */
 .theme-btn {
-    display: inline-flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 40px;

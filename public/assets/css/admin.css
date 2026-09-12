@@ -74,19 +74,37 @@ a { color: inherit; }
 }
 
 .topbar {
-    height: 68px;
+    height: 60px;
     background: var(--bg-card);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 28px;
+    gap: 10px;
+    padding: 0 14px;
     border-bottom: 1px solid var(--border-color);
 }
 
+@media (min-width: 640px) {
+    .topbar {
+        height: 68px;
+        padding: 0 28px;
+    }
+}
+
 .topbar h2 {
-    font-size: 1.15rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+@media (min-width: 640px) {
+    .topbar h2 {
+        font-size: 1.15rem;
+    }
 }
 
 .topbar-actions {
@@ -98,19 +116,34 @@ a { color: inherit; }
 .btn-logout {
     background: var(--danger-color);
     color: #fff;
-    padding: 9px 18px;
+    padding: 8px 12px;
     border-radius: var(--radius-sm);
     text-decoration: none;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
+    white-space: nowrap;
     transition: filter 0.15s ease;
+}
+
+@media (min-width: 640px) {
+    .btn-logout {
+        padding: 9px 18px;
+        font-size: 0.88rem;
+    }
 }
 
 .btn-logout:hover { filter: brightness(0.9); }
 
 .page-content {
-    padding: 28px;
+    padding: 16px;
     flex: 1;
+    min-width: 0;
+}
+
+@media (min-width: 640px) {
+    .page-content {
+        padding: 28px;
+    }
 }
 
 /* Alerts */
@@ -131,14 +164,24 @@ a { color: inherit; }
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow);
-    padding: 22px;
+    padding: 16px;
     margin-bottom: 22px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+@media (min-width: 640px) {
+    .card {
+        padding: 22px;
+    }
 }
 
 .card-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     margin-bottom: 18px;
 }
 
@@ -187,9 +230,12 @@ select, textarea {
     box-shadow: 0 0 0 3px rgba(15,107,62,0.15);
 }
 
-/* Tables */
+/* Tables — scroll horizontally inside .card on narrow screens rather than
+   squeezing columns illegible; min-width forces the scroll to kick in
+   instead of letting cells wrap into a jumbled mess. */
 table {
     width: 100%;
+    min-width: 560px;
     border-collapse: collapse;
     font-size: 0.9rem;
 }

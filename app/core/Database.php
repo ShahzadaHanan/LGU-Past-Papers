@@ -50,9 +50,18 @@ class Database
         return $this->query($sql, $params)->fetchAll();
     }
 
+    /**
+     * Success means the statement executed without error, not that it
+     * changed rows — an UPDATE that matches 0 rows (submitted with
+     * unchanged values) is still a successful no-op, not a failure.
+     * PDO::ERRMODE_EXCEPTION means a real failure already threw before
+     * reaching this return, so this reports the statement's own result.
+     */
     public function execute(string $sql, array $params = []): bool
     {
-        return $this->query($sql, $params)->rowCount() > 0;
+        $statement = $this->pdo->prepare($sql);
+
+        return $statement->execute($params);
     }
 
     public function pdo(): PDO

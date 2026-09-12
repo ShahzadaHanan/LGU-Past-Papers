@@ -41,6 +41,19 @@ class LoginController extends Controller
 
     public function login(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->render(
+                'auth/login',
+                [
+                    'title' => 'Admin Login',
+                    'action' => '/admin/login'
+                ],
+                'auth'
+            );
+
+            return;
+        }
+
         $success = $this->auth->login(
             $this->request->input('email'),
             $this->request->input('password')

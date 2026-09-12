@@ -48,4 +48,9 @@ class NewsletterSubscriberRepository
     {
         return $this->db->execute("UPDATE newsletter_subscribers SET is_verified = ? WHERE id = ?", [$isVerified ? 1 : 0, $id]);
     }
+
+    public function deactivateByToken(string $token): bool
+    {
+        return $this->db->execute("UPDATE newsletter_subscribers SET is_verified = 0 WHERE unsubscribe_token = ?", [$token]);
+    }
 }
