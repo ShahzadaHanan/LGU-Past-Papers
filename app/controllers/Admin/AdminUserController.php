@@ -37,6 +37,11 @@ class AdminUserController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/users/create');
+            return;
+        }
+
         try {
             $this->service->create($this->request->all());
             $this->session->flash('success', 'Admin user created.');
@@ -59,6 +64,11 @@ class AdminUserController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/users/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->update($id, $this->request->all());
             $this->session->flash('success', 'Admin user updated.');
@@ -70,6 +80,11 @@ class AdminUserController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/users');
+            return;
+        }
+
         $this->service->delete($id);
         $this->session->flash('success', 'Admin user deleted.');
         $this->response->redirect('/admin/users');

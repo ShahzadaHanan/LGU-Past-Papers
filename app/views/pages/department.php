@@ -1,47 +1,68 @@
+<section class="page-hero">
+    <div class="container">
+        <?php $crumbs = [
+            ['label' => 'Departments', 'url' => '/departments'],
+            ['label' => $department['name'], 'url' => null],
+        ]; require basePath('app/views/components/breadcrumb.php'); ?>
+        <h1><?= htmlspecialchars($department['name'], ENT_QUOTES, 'UTF-8') ?></h1>
+        <p><?= htmlspecialchars(mb_strimwidth(strip_tags($department['description'] ?? ''), 0, 160, '…'), ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+</section>
+
 <main class="container section">
-    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">
-        <div style="flex: 1 1 500px;">
-            <h1 style="font-size: 2.6rem; font-weight: 800; color: var(--primary-color); margin-bottom: 20px;">
-                <?= htmlspecialchars($department['name']) ?>
-            </h1>
-            <div class="card-text" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-color); margin-bottom: 30px;">
-                <?= $department['description'] ?>
+    <div style="display:flex; gap:40px; flex-wrap:wrap; margin-bottom:44px; align-items:flex-start;">
+        <div style="flex:1 1 480px;">
+            <h2 style="font-size:1.5rem; margin-bottom:16px;">About this department</h2>
+            <div class="card-text" style="font-size:1.03rem; line-height:1.8; color:var(--text-color);">
+                <?php if (!empty($department['description'])): ?>
+                    <?= $department['description'] /* trusted admin-authored rich text */ ?>
+                <?php else: ?>
+                    <p>
+                        The <?= htmlspecialchars($department['name'], ENT_QUOTES, 'UTF-8') ?> department at Lahore
+                        Garrison University offers current students a full archive of past papers and lectures
+                        for every degree program listed below.
+                    </p>
+                <?php endif; ?>
             </div>
         </div>
         <?php if (!empty($department['hero_image'])): ?>
-            <div style="flex: 1 1 400px;">
-                <img src="<?= htmlspecialchars($department['hero_image']) ?>" alt="<?= htmlspecialchars($department['name']) ?>" style="width: 100%; border-radius: 16px; box-shadow: var(--shadow); object-fit: cover; height: 350px;">
+            <div style="flex:1 1 360px;">
+                <img src="<?= htmlspecialchars($department['hero_image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($department['name'], ENT_QUOTES, 'UTF-8') ?>" style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow); object-fit:cover; height:300px;">
             </div>
         <?php endif; ?>
     </div>
 
-    <!-- Career Opportunities Content Blocks -->
     <?php if (!empty($blocks)): ?>
-        <section style="margin-bottom: 50px; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px;">
+        <section style="margin-bottom:44px; background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:32px;">
             <?php foreach ($blocks as $block): ?>
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 15px; color: var(--primary-color);"><?= htmlspecialchars($block['heading']) ?></h3>
-                    <div style="color: var(--text-muted); font-size: 1rem; line-height: 1.7;"><?= $block['body'] ?></div>
+                <div style="margin-bottom:24px;">
+                    <h3 style="font-size:1.3rem; margin-bottom:12px; color:var(--primary-color);"><?= htmlspecialchars($block['heading'], ENT_QUOTES, 'UTF-8') ?></h3>
+                    <div style="color:var(--text-muted); line-height:1.7;"><?= $block['body'] ?></div>
                 </div>
             <?php endforeach; ?>
         </section>
     <?php endif; ?>
 
-    <!-- Degrees list (Sub-Departments) -->
-    <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 20px;">Degree Programs Offered</h2>
-    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+    <div class="section-head" style="text-align:left; margin-bottom:24px;">
+        <span class="eyebrow">Degree Programs</span>
+        <h2>Choose your program</h2>
+    </div>
+
+    <div class="grid">
         <?php if (empty($degrees)): ?>
-            <p style="color: var(--text-muted);">No degree programs listed under this department yet.</p>
+            <div class="empty-state">No degree programs listed under this department yet — check back soon.</div>
         <?php else: ?>
             <?php foreach ($degrees as $degree): ?>
-                <div class="card" style="padding: 25px; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
-                    <div>
-                        <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; color: var(--primary-color);"><?= htmlspecialchars($degree['name']) ?></h3>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            <?= strip_tags($degree['description'] ?? '') ?>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-title"><?= htmlspecialchars($degree['name'], ENT_QUOTES, 'UTF-8') ?></h3>
+                        <p class="card-text">
+                            <?= htmlspecialchars(mb_strimwidth(strip_tags($degree['description'] ?? ''), 0, 110, '…'), ENT_QUOTES, 'UTF-8') ?>
                         </p>
+                        <a href="/department/<?= htmlspecialchars($department['slug'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars($degree['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-block">
+                            View Past Papers
+                        </a>
                     </div>
-                    <a href="/department/<?= htmlspecialchars($department['slug']) ?>/<?= htmlspecialchars($degree['slug']) ?>" class="btn" style="text-align: center;">View Past Papers</a>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

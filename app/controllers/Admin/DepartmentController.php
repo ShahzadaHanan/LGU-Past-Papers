@@ -81,6 +81,11 @@ class DepartmentController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/departments/create');
+            return;
+        }
+
         try {
             $this->service->create(
                 $this->request->all(),
@@ -134,6 +139,11 @@ class DepartmentController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/departments/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->update(
                 $id,
@@ -159,6 +169,11 @@ class DepartmentController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/departments');
+            return;
+        }
+
         try {
             $this->service->delete(
                 $id

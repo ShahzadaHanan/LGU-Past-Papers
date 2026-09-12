@@ -10,6 +10,8 @@
 <td><span class="badge <?= $v->is_active ? 'badge-success' : 'badge-danger' ?>"><?= $v->is_active ? 'Active' : 'Inactive' ?></span></td>
 <td>
 <a class="btn-secondary" href="/admin/videos/<?= (int) $v->id ?>/edit">Edit</a>
+<form method="POST" action="/admin/videos/<?= (int) $v->id ?>/notify" style="display:inline" onsubmit="return confirm('Email all active subscribers about this video?')">
+<?= \App\Helpers\Form::csrf($csrf) ?><button class="btn-secondary" type="submit">Notify Subscribers</button></form>
 <form method="POST" action="/admin/videos/<?= (int) $v->id ?>/delete" style="display:inline" class="form-delete" onsubmit="return confirm('Delete this video?')">
 <?= \App\Helpers\Form::csrf($csrf) ?><button class="btn-danger" type="submit">Delete</button></form>
 </td>

@@ -1,80 +1,27 @@
-<?php $title = $title ?? 'Admin Login'; ?>
+<div class="auth-card">
 
-<div class="login-wrapper">
-<div class="login-card">
+    <h1><?= htmlspecialchars($title ?? 'Admin Login', ENT_QUOTES, 'UTF-8') ?></h1>
 
-<h1>LGU Admin Login</h1>
-<p class="login-subtitle">Sign in to manage past papers, lectures &amp; site content.</p>
+    <?php if ($error = $session->flash('error')): ?>
+        <p class="alert alert-danger"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
 
-<?php if ($error = $session->flash('error')): ?>
+    <?php if ($success = $session->flash('success')): ?>
+        <p class="alert alert-success"><?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
 
-    <div class="alert alert-danger">
-        <?= htmlspecialchars($error) ?>
-    </div>
+    <form method="POST" action="<?= htmlspecialchars($action ?? '/admin/login', ENT_QUOTES, 'UTF-8') ?>">
 
-<?php endif; ?>
+        <?= \App\Helpers\Form::csrf($csrf) ?>
 
-<?php if ($success = $session->flash('success')): ?>
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" placeholder="you@lgu.edu.pk" required autofocus>
 
-    <div class="alert alert-success">
-        <?= htmlspecialchars($success) ?>
-    </div>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" placeholder="Password" required>
 
-<?php endif; ?>
+        <button type="submit">Login</button>
 
-<form
-    method="POST"
-    action="<?= $action ?? '/admin/login' ?>">
+    </form>
 
-    <input
-        type="hidden"
-        name="_token"
-        value="<?= $csrf->token() ?>">
-
-    <div class="form-group">
-
-        <label>Email</label>
-
-        <input
-            type="email"
-            name="email"
-            required
-            autofocus>
-
-    </div>
-
-    <div class="form-group">
-
-        <label>Password</label>
-
-        <input
-            type="password"
-            name="password"
-            required>
-
-    </div>
-
-    <div class="form-group remember">
-
-        <label>
-            <input
-                type="checkbox"
-                name="remember">
-
-            Remember Me
-        </label>
-
-    </div>
-
-    <button
-        class="btn btn-primary"
-        type="submit">
-
-        Login
-
-    </button>
-
-</form>
-
-</div>
 </div>

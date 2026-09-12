@@ -38,11 +38,32 @@ abstract class Repository
 
     }
 
+    /**
+     * Column names can never be bound as PDO parameters, so every caller
+     * must whitelist its own fields in the Service layer before reaching
+     * here (see DepartmentService::create() for the pattern). This is the
+     * second layer of defense: it refuses anything that isn't a plausible
+     * column identifier, so a stray attacker-controlled array key can never
+     * reach raw SQL even if a Service forgets to whitelist.
+     */
+    private function assertValidColumn(string $column): void
+    {
+        if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column)) {
+            throw new \InvalidArgumentException(
+                "Refusing to build a query with invalid column name: {$column}"
+            );
+        }
+    }
+
     public function create(
         array $data
     ): bool {
 
         $columns=array_keys($data);
+
+        foreach ($columns as $column) {
+            $this->assertValidColumn($column);
+        }
 
         $placeholders=array_fill(
             0,
@@ -71,6 +92,8 @@ abstract class Repository
         $fields=[];
 
         foreach($data as $column=>$value){
+
+            $this->assertValidColumn($column);
 
             $fields[]="{$column}=?";
 

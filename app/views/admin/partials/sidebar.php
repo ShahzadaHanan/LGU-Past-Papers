@@ -23,9 +23,13 @@ LGU Admin
 
 <li><a href="/admin/hero-slides">Hero Slides</a></li>
 
+<li><a href="/admin/announcements">News Bar</a></li>
+
 <li><a href="/admin/content-blocks">Content Blocks</a></li>
 
-<li><a href="/admin/alumni-testimonials">Alumni Testimonials</a></li>
+<li><a href="/admin/alumni-testimonials">Alumni</a></li>
+
+<li><a href="/admin/testimonials">Testimonials</a></li>
 
 <li><a href="/admin/class-bookings">Bookings</a></li>
 

@@ -37,6 +37,11 @@ class HeroSlideController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/hero-slides/create');
+            return;
+        }
+
         try {
             $this->service->createHeroSlide($this->request->all(), $this->request->file('image'));
             $this->session->flash('success', 'Hero slide created.');
@@ -59,6 +64,11 @@ class HeroSlideController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/hero-slides/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->updateHeroSlide($id, $this->request->all(), $this->request->file('image'));
             $this->session->flash('success', 'Hero slide updated.');
@@ -70,6 +80,11 @@ class HeroSlideController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/hero-slides');
+            return;
+        }
+
         $this->service->deleteHeroSlide($id);
         $this->session->flash('success', 'Hero slide deleted.');
         $this->response->redirect('/admin/hero-slides');

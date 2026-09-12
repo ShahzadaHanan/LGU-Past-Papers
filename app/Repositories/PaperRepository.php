@@ -80,22 +80,25 @@ class PaperRepository
 
     public function search(string $search, int $limit, int $offset): array
     {
+        // LIMIT/OFFSET bound as PDO params come through as quoted strings
+        // (MySQL rejects that syntax), so they're interpolated directly —
+        // safe here since both are already typed `int` by the signature.
         if ($search !== '') {
             $rows = $this->db->fetchAll(
                 "SELECT p.*, sd.name AS sub_department_name
                  FROM papers p
                  LEFT JOIN sub_departments sd ON sd.id = p.sub_department_id
                  WHERE p.subject_name LIKE ? OR p.session LIKE ?
-                 ORDER BY p.id DESC LIMIT ? OFFSET ?",
-                ["%{$search}%", "%{$search}%", $limit, $offset]
+                 ORDER BY p.id DESC LIMIT {$limit} OFFSET {$offset}",
+                ["%{$search}%", "%{$search}%"]
             );
         } else {
             $rows = $this->db->fetchAll(
                 "SELECT p.*, sd.name AS sub_department_name
                  FROM papers p
                  LEFT JOIN sub_departments sd ON sd.id = p.sub_department_id
-                 ORDER BY p.id DESC LIMIT ? OFFSET ?",
-                [$limit, $offset]
+                 ORDER BY p.id DESC LIMIT {$limit} OFFSET {$offset}",
+                []
             );
         }
 

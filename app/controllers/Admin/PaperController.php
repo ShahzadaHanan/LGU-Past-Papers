@@ -12,6 +12,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Services\PaperService;
 use App\Services\SubDepartmentService;
+use App\Services\NewsletterMailerService;
 
 class PaperController extends Controller
 {
@@ -22,7 +23,8 @@ class PaperController extends Controller
         private Request $request,
         private Response $response,
         private PaperService $service,
-        private SubDepartmentService $subDepartmentService
+        private SubDepartmentService $subDepartmentService,
+        private NewsletterMailerService $mailer
     ) {
         parent::__construct($view, $session, $csrf);
     }
@@ -51,6 +53,11 @@ class PaperController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/papers/create');
+            return;
+        }
+
         try {
             $this->service->createPaper(
                 $this->request->all(),
@@ -85,6 +92,11 @@ class PaperController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/papers/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->updatePaper(
                 $id,
@@ -103,8 +115,43 @@ class PaperController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/papers');
+            return;
+        }
+
         $this->service->deletePaper($id);
         $this->session->flash('success', 'Paper deleted successfully.');
+        $this->response->redirect('/admin/papers');
+    }
+
+    public function notify(int $id): void
+    {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/papers');
+            return;
+        }
+
+        $paper = $this->service->getPaperById($id);
+        if (!$paper) {
+            $this->session->flash('error', 'Paper not found.');
+            $this->response->redirect('/admin/papers');
+            return;
+        }
+
+        try {
+            $result = $this->mailer->notify(
+                'paper',
+                $paper->id,
+                $paper->subject_name,
+                "A new {$paper->exam_type} paper for {$paper->subject_name} ({$paper->session}) has just been added to LGU Hub.",
+                rtrim(env('APP_URL', ''), '/') . '/paper/' . $paper->slug
+            );
+            $this->session->flash('success', "Notified {$result['sent']} of {$result['total']} active subscribers.");
+        } catch (\Exception $e) {
+            $this->session->flash('error', $e->getMessage());
+        }
+
         $this->response->redirect('/admin/papers');
     }
 }

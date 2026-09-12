@@ -34,6 +34,11 @@
                     <td><?= (int) $paper->views_count ?></td>
                     <td>
                         <a class="btn-secondary" href="/admin/papers/<?= (int) $paper->id ?>/edit">Edit</a>
+                        <form method="POST" action="/admin/papers/<?= (int) $paper->id ?>/notify" style="display:inline"
+                              onsubmit="return confirm('Email all active subscribers about this paper?')">
+                            <?= \App\Helpers\Form::csrf($csrf) ?>
+                            <button class="btn-secondary" type="submit">Notify Subscribers</button>
+                        </form>
                         <form method="POST" action="/admin/papers/<?= (int) $paper->id ?>/delete" style="display:inline"
                               class="form-delete" onsubmit="return confirm('Delete this paper?')">
                             <?= \App\Helpers\Form::csrf($csrf) ?>

@@ -36,6 +36,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Department -> Degree cascading select (video create/edit forms).
+    // window.SUB_DEPARTMENTS is embedded inline by the view before this file loads.
+    var deptSelect = document.getElementById('department_select');
+    var subDeptSelect = document.getElementById('sub_department_select');
+    if (deptSelect && subDeptSelect && window.SUB_DEPARTMENTS) {
+        var selectedSubDept = subDeptSelect.dataset.selected || '';
+        var populateDegrees = function (deptId, selectedId) {
+            subDeptSelect.innerHTML = '<option value="">Select degree</option>';
+            window.SUB_DEPARTMENTS
+                .filter(function (sd) { return String(sd.department_id) === String(deptId); })
+                .forEach(function (sd) {
+                    var opt = document.createElement('option');
+                    opt.value = sd.id;
+                    opt.textContent = sd.name;
+                    if (selectedId && String(sd.id) === String(selectedId)) opt.selected = true;
+                    subDeptSelect.appendChild(opt);
+                });
+        };
+        deptSelect.addEventListener('change', function () { populateDegrees(deptSelect.value, null); });
+        if (deptSelect.value) populateDegrees(deptSelect.value, selectedSubDept);
+    }
+
     // Sidebar active-link highlight
     var path = window.location.pathname;
     document.querySelectorAll('.sidebar a').forEach(function (link) {

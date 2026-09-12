@@ -37,6 +37,11 @@ class NewsletterSubscriberController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/newsletter-subscribers/create');
+            return;
+        }
+
         $data = $this->request->all();
         $data['is_verified'] = isset($data['is_verified']) ? 1 : 0;
         try {
@@ -61,6 +66,11 @@ class NewsletterSubscriberController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/newsletter-subscribers/{$id}/edit");
+            return;
+        }
+
         $data = $this->request->all();
         $data['is_verified'] = isset($data['is_verified']) ? 1 : 0;
         try {
@@ -74,6 +84,11 @@ class NewsletterSubscriberController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/newsletter-subscribers');
+            return;
+        }
+
         $this->service->delete($id);
         $this->session->flash('success', 'Subscriber deleted.');
         $this->response->redirect('/admin/newsletter-subscribers');
@@ -81,6 +96,11 @@ class NewsletterSubscriberController extends Controller
 
     public function toggleStatus(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/newsletter-subscribers');
+            return;
+        }
+
         $this->service->toggleStatus($id);
         $this->response->redirect('/admin/newsletter-subscribers');
     }

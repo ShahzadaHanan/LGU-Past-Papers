@@ -1,84 +1,55 @@
+<?php
+$examTypes = [
+    'mids' => 'Mid-Term Papers',
+    'finals' => 'Final-Term Papers',
+    'summer_mids' => 'Summer Mid-Term Papers',
+    'summer_finals' => 'Summer Final-Term Papers',
+];
+$firstKey = array_key_first($examTypes);
+?>
+<section class="page-hero">
+    <div class="container">
+        <?php $crumbs = [
+            ['label' => $department['name'], 'url' => '/department/' . $department['slug']],
+            ['label' => $degree['name'], 'url' => null],
+        ]; require basePath('app/views/components/breadcrumb.php'); ?>
+        <h1><?= htmlspecialchars($degree['name'], ENT_QUOTES, 'UTF-8') ?> Past Papers</h1>
+        <p><?= htmlspecialchars($degree['description'] ?? ('All mid-term, final-term and summer past papers for ' . $degree['name'] . ' at Lahore Garrison University.'), ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+</section>
+
 <main class="container section">
-    <!-- Breadcrumbs -->
-    <nav style="font-size: 0.9rem; margin-bottom: 30px; color: var(--text-muted);">
-        <a href="/" style="color: var(--primary-light); text-decoration: none;">Home</a> › 
-        <a href="/department/<?= htmlspecialchars($department['slug']) ?>" style="color: var(--primary-light); text-decoration: none;"><?= htmlspecialchars($department['name']) ?></a> › 
-        <span><?= htmlspecialchars($degree['name']) ?></span>
-    </nav>
-
-    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 10px;">
-        <?= htmlspecialchars($degree['name']) ?> Past Papers
-    </h1>
-    <p style="color: var(--text-muted); margin-bottom: 40px;"><?= htmlspecialchars($degree['description'] ?? '') ?></p>
-
-    <!-- Accordion Section for exam types -->
-    <div class="accordion">
-        <?php 
-        $examTypes = [
-            'mids' => 'Mid Term Papers',
-            'finals' => 'Final Term Papers',
-            'summer_mids' => 'Summer Mid Term Papers',
-            'summer_finals' => 'Summer Final Term Papers'
-        ];
-        foreach ($examTypes as $key => $title): 
-            $papersList = $groupedPapers[$key] ?? [];
-        ?>
-            <div class="accordion-item" id="accordion-<?= $key ?>">
-                <div class="accordion-header" onclick="toggleAccordion('<?= $key ?>')">
-                    <span><?= htmlspecialchars($title) ?> (<?= count($papersList) ?>)</span>
-                    <span style="font-size: 1.2rem; font-weight: bold;" id="icon-<?= $key ?>">+</span>
-                </div>
-                <div class="accordion-content" id="content-<?= $key ?>">
-                    <?php if (empty($papersList)): ?>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">No past papers available for this category yet.</p>
-                    <?php else: ?>
-                        <div style="overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
-                                <thead>
-                                    <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-weight: 600;">
-                                        <th style="padding: 12px 10px;">Paper Name</th>
-                                        <th style="padding: 12px 10px;">Session</th>
-                                        <th style="padding: 12px 10px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($papersList as $paper): ?>
-                                        <tr style="border-bottom: 1px solid var(--border-color);">
-                                            <td style="padding: 12px 10px; font-weight: 500;">
-                                                <a href="/paper/<?= htmlspecialchars($paper['slug']) ?>" style="color: var(--text-color); text-decoration: none;">
-                                                    <?= htmlspecialchars($paper['subject_name']) ?>
-                                                </a>
-                                            </td>
-                                            <td style="padding: 12px 10px;"><?= htmlspecialchars($paper['session']) ?></td>
-                                            <td style="padding: 12px 10px;">
-                                                <a href="/paper/<?= htmlspecialchars($paper['slug']) ?>" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">View Paper</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
+    <div class="exam-tabs">
+        <?php foreach ($examTypes as $key => $label): $papersList = $groupedPapers[$key] ?? []; ?>
+            <button type="button" class="exam-tab <?= $key === $firstKey ? 'active' : '' ?>" data-exam-tab="<?= $key ?>">
+                <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?> (<?= count($papersList) ?>)
+            </button>
         <?php endforeach; ?>
     </div>
-</main>
 
-<script>
-    function toggleAccordion(key) {
-        const item = document.getElementById('accordion-' + key);
-        const content = document.getElementById('content-' + key);
-        const icon = document.getElementById('icon-' + key);
-        
-        if (item.classList.contains('active')) {
-            item.classList.remove('active');
-            content.style.display = 'none';
-            icon.textContent = '+';
-        } else {
-            item.classList.add('active');
-            content.style.display = 'block';
-            icon.textContent = '−';
-        }
-    }
-</script>
+    <?php foreach ($examTypes as $key => $label): $papersList = $groupedPapers[$key] ?? []; ?>
+        <div class="exam-panel <?= $key === $firstKey ? 'active' : '' ?>" data-exam-panel="<?= $key ?>">
+            <?php if (empty($papersList)): ?>
+                <div class="empty-state">
+                    No <?= htmlspecialchars(strtolower($label), ENT_QUOTES, 'UTF-8') ?> uploaded yet.
+                    <a href="/contact-us">Submit one</a> if you have it.
+                </div>
+            <?php else: ?>
+                <?php foreach ($papersList as $paper): ?>
+                    <a href="/paper/<?= htmlspecialchars($paper['slug'], ENT_QUOTES, 'UTF-8') ?>" class="paper-row" style="text-decoration:none; color:inherit;">
+                        <div class="paper-row__meta">
+                            <strong><?= htmlspecialchars($paper['subject_name'], ENT_QUOTES, 'UTF-8') ?></strong>
+                            <span><?= htmlspecialchars($paper['session'], ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <span class="badge badge-primary">View Paper</span>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+
+    <div style="margin-top:40px; display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="/lectures" class="btn btn-secondary">Watch <?= htmlspecialchars($degree['name'], ENT_QUOTES, 'UTF-8') ?> Lectures</a>
+        <a href="/contact-us" class="btn btn-ghost">Submit a Past Paper</a>
+    </div>
+</main>

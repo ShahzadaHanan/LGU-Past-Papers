@@ -15,15 +15,11 @@ class App
 
     public function boot(): void
     {
-<<<<<<< HEAD
         $this->registerCoreServices();
-=======
->>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     }
 
     public function run(): void
     {
-<<<<<<< HEAD
         $router = $this->container->make(
             Router::class
         );
@@ -33,11 +29,6 @@ class App
         );
 
         require basePath('routes/web.php');
-
-        // $dispatcher = new Dispatcher(
-        //     $router,
-        //     $this->container
-        // );
 
         $dispatcher = $this->container->make(Dispatcher::class);
 
@@ -84,11 +75,6 @@ class App
         );
 
         $this->container->singleton(
-            \App\Core\Session::class,
-            fn() => new \App\Core\Session()
-        );
-
-        $this->container->singleton(
             \App\Services\AuthService::class,
             fn() => new \App\Services\AuthService(
                 $this->container->get(
@@ -99,32 +85,6 @@ class App
                 )
             )
         );
-
-        $this->container->singleton(
-            \App\Controllers\AuthController::class,
-            fn() => new \App\Controllers\AuthController(
-                $this->container->get(
-                    \App\Core\View::class
-                ),
-                $this->container->get(
-                    \App\Core\Session::class
-                ),
-                $this->container->get(
-                    \App\Core\Csrf::class
-                ),
-                $this->container->get(
-                    \App\Core\Request::class
-                ),
-                $this->container->get(
-                    \App\Core\Response::class
-                ),
-                $this->container->get(
-                    \App\Services\AuthService::class
-                )
-            )
-        );
-
-
 
         $this->container->singleton(
             \App\Middleware\AuthMiddleware::class,
@@ -174,25 +134,6 @@ class App
             )
         );
 
-        // $router->get(
-        //     '/admin/departments/edit/{id}',
-        //     DepartmentController::class,
-        //     'edit'
-        // );
-
-        // $router->post(
-        //     '/admin/departments/update/{id}',
-        //     DepartmentController::class,
-        //     'update'
-        // );
-
-        // $router->post(
-        //     '/admin/departments/delete/{id}',
-        //     DepartmentController::class,
-        //     'delete'
-        // );
-
-
         $this->container->singleton(
             \App\Controllers\Admin\LoginController::class,
             fn() => new \App\Controllers\Admin\LoginController(
@@ -228,11 +169,6 @@ class App
 
 
         $this->container->singleton(
-            \App\Services\FileUploadService::class,
-            fn() => new \App\Services\FileUploadService()
-        );
-
-        $this->container->singleton(
             \App\Services\SeoService::class,
             fn() => new \App\Services\SeoService()
         );
@@ -245,6 +181,15 @@ class App
         $this->container->singleton(
             \App\Services\MailService::class,
             fn() => new \App\Services\MailService()
+        );
+
+        $this->container->singleton(
+            \App\Services\NewsletterMailerService::class,
+            fn() => new \App\Services\NewsletterMailerService(
+                $this->container->get(\App\Repositories\NewsletterSubscriberRepository::class),
+                $this->container->get(\App\Services\MailService::class),
+                $this->container->get(\App\Core\Database::class)
+            )
         );
 
         $this->container->singleton(
@@ -292,7 +237,9 @@ class App
             'SiteSetting',
             'ClassBooking',
             'NewsletterSubscriber',
-            'AlumniTestimonial'
+            'AlumniTestimonial',
+            'Testimonial',
+            'Announcement'
         ];
 
         foreach ($modules as $module) {
@@ -319,7 +266,7 @@ class App
                         $this->container->get(\App\Services\FileUploadService::class)
                     )
                 );
-            } elseif ($module === 'AlumniTestimonial') {
+            } elseif ($module === 'AlumniTestimonial' || $module === 'Testimonial') {
 
                 $this->container->singleton(
                     $serviceClass,
@@ -352,7 +299,10 @@ class App
                         $this->container->get(\App\Core\Request::class),
                         $this->container->get(\App\Core\Response::class),
                         $this->container->get($serviceClass),
-                        $this->container->get(\App\Services\VideoCategoryService::class)
+                        $this->container->get(\App\Services\VideoCategoryService::class),
+                        $this->container->get(\App\Services\NewsletterMailerService::class),
+                        $this->container->get(\App\Services\DepartmentService::class),
+                        $this->container->get(\App\Services\SubDepartmentService::class)
                     )
                 );
             } elseif ($module === 'Paper') {
@@ -366,9 +316,22 @@ class App
                         $this->container->get(\App\Core\Request::class),
                         $this->container->get(\App\Core\Response::class),
                         $this->container->get($serviceClass),
+                        $this->container->get(\App\Services\SubDepartmentService::class),
+                        $this->container->get(\App\Services\NewsletterMailerService::class)
+                    )
+                );
+            } elseif ($module === 'Announcement') {
 
-                        // 7th dependency goes here
-                        $this->container->get(\App\Services\SubDepartmentService::class)
+                $this->container->singleton(
+                    $controllerClass,
+                    fn() => new $controllerClass(
+                        $this->container->get(\App\Core\View::class),
+                        $this->container->get(\App\Core\Session::class),
+                        $this->container->get(\App\Core\Csrf::class),
+                        $this->container->get(\App\Core\Request::class),
+                        $this->container->get(\App\Core\Response::class),
+                        $this->container->get($serviceClass),
+                        $this->container->get(\App\Services\NewsletterMailerService::class)
                     )
                 );
             } else {
@@ -393,11 +356,6 @@ class App
             $this->container->get(\App\Repositories\PaperSubmissionRepository::class),
             $this->container->get(\App\Services\PaperService::class)
         ));
-
-        // $this->container->singleton(\App\Controllers\Admin\PaperSubmissionController::class, fn() => new \App\Controllers\Admin\PaperSubmissionController(
-        //     $this->container->get(\App\Services\PaperSubmissionService::class),
-        //     $this->container->get(\App\Core\View::class)
-        // ));
 
         $this->container->singleton(
             \App\Controllers\Admin\PaperSubmissionController::class,
@@ -428,13 +386,9 @@ class App
             )
         );
     }
-}
-=======
-    }
 
     public function container(): Container
     {
         return $this->container;
     }
 }
->>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705

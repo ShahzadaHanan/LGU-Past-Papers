@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Core;
-
-<<<<<<< HEAD
 use Closure;
 use ReflectionClass;
 use ReflectionException;
@@ -13,21 +11,36 @@ class Container
 {
     private array $bindings = [];
     private array $instances = [];
+    private array $singletonFactories = [];
 
     public function bind(string $abstract, Closure|string $concrete): void
     {
         $this->bindings[$abstract] = $concrete;
     }
 
+    /**
+     * Registers the factory but does NOT resolve it yet — resolution
+     * happens once, lazily, on first make()/get(). Registering ~40
+     * controllers/services/repositories at boot used to construct every
+     * one of them on every single request regardless of which route was
+     * hit; this makes App::registerCoreServices() cheap again.
+     */
     public function singleton(string $abstract, Closure|string $concrete): void
     {
-        $this->instances[$abstract] = $this->resolve($concrete);
+        $this->singletonFactories[$abstract] = $concrete;
+        unset($this->instances[$abstract]);
     }
 
     public function make(string $abstract): mixed
     {
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
+        }
+
+        if (isset($this->singletonFactories[$abstract])) {
+            return $this->instances[$abstract] = $this->resolve(
+                $this->singletonFactories[$abstract]
+            );
         }
 
         if (isset($this->bindings[$abstract])) {
@@ -80,24 +93,5 @@ class Container
         } catch (ReflectionException $e) {
             throw new \Exception($e->getMessage());
         }
-=======
-class Container
-{
-    private array $services = [];
-
-    public function set(string $key, mixed $service): void
-    {
-        $this->services[$key] = $service;
-    }
-
-    public function get(string $key): mixed
-    {
-        return $this->services[$key] ?? null;
-    }
-
-    public function has(string $key): bool
-    {
-        return isset($this->services[$key]);
->>>>>>> 6fe3e775d7907baf387ac1fad4911d33907d3705
     }
 }

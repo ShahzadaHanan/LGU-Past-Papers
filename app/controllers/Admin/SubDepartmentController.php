@@ -62,14 +62,7 @@ class SubDepartmentController extends Controller
 
     public function store(): void
     {
-        if (!$this->csrf->validate(
-            $this->request->input('_token')
-        )) {
-            $this->session->flash(
-                'error',
-                'Invalid CSRF token.'
-            );
-
+        if (!$this->verifyCsrf()) {
             $this->response->redirect(
                 '/admin/sub-departments/create'
             );
@@ -137,14 +130,7 @@ class SubDepartmentController extends Controller
 
     public function update(int $id): void
     {
-        if (!$this->csrf->validate(
-            $this->request->input('_token')
-        )) {
-            $this->session->flash(
-                'error',
-                'Invalid CSRF token.'
-            );
-
+        if (!$this->verifyCsrf()) {
             $this->response->redirect(
                 "/admin/sub-departments/{$id}/edit"
             );
@@ -184,14 +170,7 @@ class SubDepartmentController extends Controller
 
     public function delete(int $id): void
     {
-        if (!$this->csrf->validate(
-            $this->request->input('_token')
-        )) {
-            $this->session->flash(
-                'error',
-                'Invalid CSRF token.'
-            );
-
+        if (!$this->verifyCsrf()) {
             $this->response->redirect(
                 '/admin/sub-departments'
             );

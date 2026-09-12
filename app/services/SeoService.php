@@ -16,6 +16,12 @@ class SeoService
 
     private array $openGraph=[];
 
+    private string $ogImage='';
+
+    private array $jsonLd=[];
+
+    private string $robots='index, follow';
+
     public function title(
         string $title
     ):self{
@@ -66,6 +72,37 @@ class SeoService
 
     }
 
+    public function ogImage(
+        string $url
+    ):self{
+
+        $this->ogImage=$url;
+
+        return $this;
+
+    }
+
+    /** Accepts one schema.org node, or an array of nodes ('@graph'). */
+    public function jsonLd(
+        array $schema
+    ):self{
+
+        $this->jsonLd[]=$schema;
+
+        return $this;
+
+    }
+
+    public function robots(
+        string $directive
+    ):self{
+
+        $this->robots=$directive;
+
+        return $this;
+
+    }
+
     public function data():array
     {
         return[
@@ -73,7 +110,10 @@ class SeoService
             'description'=>$this->description,
             'canonical'=>$this->canonical,
             'keywords'=>implode(',',$this->keywords),
-            'og'=>$this->openGraph
+            'og'=>$this->openGraph,
+            'ogImage'=>$this->ogImage,
+            'jsonLd'=>$this->jsonLd,
+            'robots'=>$this->robots,
         ];
     }
 }

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_app_config_database_php", "label": "database.php", "file_type": "code", "source_file": "app/config/database.php", "source_location": "L1"}], "edges": [], "raw_calls": []}

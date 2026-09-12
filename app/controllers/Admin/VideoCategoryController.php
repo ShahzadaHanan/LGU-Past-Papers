@@ -37,6 +37,11 @@ class VideoCategoryController extends Controller
 
     public function store(): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/video-categories/create');
+            return;
+        }
+
         try {
             $this->service->createVideoCategory($this->request->all());
             $this->session->flash('success', 'Video category created.');
@@ -59,6 +64,11 @@ class VideoCategoryController extends Controller
 
     public function update(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect("/admin/video-categories/{$id}/edit");
+            return;
+        }
+
         try {
             $this->service->updateVideoCategory($id, $this->request->all());
             $this->session->flash('success', 'Video category updated.');
@@ -70,6 +80,11 @@ class VideoCategoryController extends Controller
 
     public function delete(int $id): void
     {
+        if (!$this->verifyCsrf()) {
+            $this->response->redirect('/admin/video-categories');
+            return;
+        }
+
         $this->service->deleteVideoCategory($id);
         $this->session->flash('success', 'Video category deleted.');
         $this->response->redirect('/admin/video-categories');

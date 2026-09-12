@@ -16,6 +16,11 @@ class NewsletterSubscriberService
     public function update(int $id, array $data): bool { return $this->repository->update($id, $data); }
     public function delete(int $id): bool { return $this->repository->delete($id); }
 
+    public function unsubscribeByToken(string $token): bool
+    {
+        return $this->repository->deactivateByToken($token);
+    }
+
     public function toggleStatus(int $id): bool
     {
         $subscriber = $this->repository->find($id);

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_database_migrations_20260808_001_create_activity_logs_table_php", "label": "20260808_001_create_activity_logs_table.php", "file_type": "code", "source_file": "database/migrations/20260808_001_create_activity_logs_table.php", "source_location": "L1"}], "edges": [], "raw_calls": []}

@@ -36,6 +36,21 @@ class VideoService
         return $this->repository->delete($id);
     }
 
+    public function filtered(?string $departmentSlug, ?string $subDepartmentSlug, ?string $subject, int $limit, int $offset): array
+    {
+        return $this->repository->filtered($departmentSlug, $subDepartmentSlug, $subject, $limit, $offset);
+    }
+
+    public function countFiltered(?string $departmentSlug, ?string $subDepartmentSlug, ?string $subject): int
+    {
+        return $this->repository->countFiltered($departmentSlug, $subDepartmentSlug, $subject);
+    }
+
+    public function subjectsBySubDepartment(): array
+    {
+        return $this->repository->subjectsBySubDepartment();
+    }
+
     private function prepareVideoData(array $data): array
     {
         $data['is_active'] = isset($data['is_active']) ? 1 : 0;
