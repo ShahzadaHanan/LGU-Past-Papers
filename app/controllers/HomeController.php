@@ -2267,6 +2267,71 @@ class HomeController extends Controller
         );
     }
 
+    public function sgpaCalculator(): void
+    {
+        $this->gpaCalculatorPage(
+            'sgpa',
+            'LGU SGPA Calculator — Semester GPA (4.00 Scale) | LGU Hub',
+            'Free LGU SGPA calculator: enter credit hours and grades to get your Lahore Garrison University semester GPA on the official 4.00 scale.',
+            'LGU SGPA Calculator'
+        );
+    }
+
+    public function cgpaCalculator(): void
+    {
+        $this->gpaCalculatorPage(
+            'cgpa',
+            'LGU CGPA Calculator — Cumulative GPA (4.00 Scale) | LGU Hub',
+            'Free LGU CGPA calculator: add each semester\'s GPA and credit hours to get your Lahore Garrison University CGPA, plus probation and degree rules.',
+            'LGU CGPA Calculator'
+        );
+    }
+
+    /** Shared by both calculator pages: same grading data, same schema shape. */
+    private function gpaCalculatorPage(string $type, string $title, string $description, string $appName): void
+    {
+        $grading = require dirname(__DIR__) . '/data/LguGradingData.php';
+        $faqs = $grading['faqs'][$type];
+        $baseUrl = rtrim(env('APP_URL', ''), '/');
+
+        $this->render(
+            "pages/{$type}_calculator",
+            [
+                'title' => $title,
+                'seo' => (new \App\Services\SeoService())
+                    ->description($description)
+                    ->ogImage($baseUrl . asset('images/brand/campus-hero.jpg'))
+                    ->jsonLd([
+                        '@context' => 'https://schema.org',
+                        '@type' => 'WebApplication',
+                        'name' => $appName,
+                        'url' => "{$baseUrl}/lgu-{$type}-calculator",
+                        'description' => $description,
+                        'applicationCategory' => 'EducationalApplication',
+                        'operatingSystem' => 'Any',
+                        'isAccessibleForFree' => true,
+                        'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'PKR'],
+                        'audience' => [
+                            '@type' => 'EducationalAudience',
+                            'educationalRole' => 'student',
+                            'name' => 'Lahore Garrison University students',
+                        ],
+                    ])
+                    ->jsonLd([
+                        '@context' => 'https://schema.org',
+                        '@type' => 'FAQPage',
+                        'mainEntity' => array_map(fn($f) => [
+                            '@type' => 'Question',
+                            'name' => $f['q'],
+                            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['a']],
+                        ], $faqs),
+                    ]),
+                'grading' => $grading,
+                'faqs' => $faqs,
+            ]
+        );
+    }
+
     public function roadmaps(): void
     {
         $this->render(

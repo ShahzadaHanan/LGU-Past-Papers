@@ -35,6 +35,8 @@ $footerDepartments = array_slice($navDepartments, 0, 6);
                 <li><a href="/roadmaps" class="footer-link">Degree Roadmaps</a></li>
                 <li><a href="/fee-structure" class="footer-link">Fee Structure</a></li>
                 <li><a href="/scholarships" class="footer-link">Scholarships</a></li>
+                <li><a href="/lgu-sgpa-calculator" class="footer-link">SGPA Calculator</a></li>
+                <li><a href="/lgu-cgpa-calculator" class="footer-link">CGPA Calculator</a></li>
                 <li><a href="/about-lgu" class="footer-link">About LGU</a></li>
                 <li><a href="/about-us" class="footer-link">About This Platform</a></li>
                 <li><a href="/contact-us" class="footer-link">Contact &amp; Submit a Paper</a></li>

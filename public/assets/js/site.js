@@ -260,8 +260,10 @@
             var panel = item.querySelector('[data-accordion-panel]');
             if (!panel) return;
 
+            btn.setAttribute('aria-expanded', 'false');
             btn.addEventListener('click', function () {
                 var isOpen = panel.classList.contains('open');
+                btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
 
                 if (isOpen) {
                     panel.style.maxHeight = panel.scrollHeight + 'px';
@@ -424,6 +426,135 @@
         document.head.appendChild(script);
     }
 
+    /* ---- LGU SGPA / CGPA calculators (/lgu-sgpa-calculator,
+       /lgu-cgpa-calculator). Grade points and credits are kept as integers
+       in hundredths so LGU's rounding rule — 2 decimals, third decimal >= 5
+       rounds up — is exact: round(P/C) half-up == floor((2P + C) / 2C).
+       Float math (Math.round(x * 100) / 100) misrounds cases like 2.675. */
+    function gpaHundredths(points100, credits) {
+        return credits > 0 ? Math.floor((2 * points100 + credits) / (2 * credits)) : null;
+    }
+    window.lguGpa = { gpaHundredths: gpaHundredths };
+
+    function initGpaCalculators() {
+        document.querySelectorAll('[data-gpa-calc]').forEach(function (calc) {
+            var type = calc.getAttribute('data-gpa-calc');
+            var rows = calc.querySelector('[data-gpa-rows]');
+            var template = calc.querySelector('[data-gpa-row-template]');
+            var initial = parseInt(calc.getAttribute('data-gpa-initial'), 10) || 1;
+            var addBtn = calc.querySelector('[data-gpa-add]');
+            var result = calc.parentNode.querySelector('.gpa-result');
+            if (!rows || !template || !result) return;
+
+            function addRow() {
+                rows.appendChild(template.content.cloneNode(true));
+                return rows.lastElementChild;
+            }
+
+            function reset() {
+                rows.innerHTML = '';
+                for (var i = 0; i < initial; i++) addRow();
+                compute();
+            }
+
+            function note(text, tone) {
+                var li = document.createElement('li');
+                li.className = 'gpa-note gpa-note--' + tone;
+                li.textContent = text;
+                return li;
+            }
+
+            function compute() {
+                var points100 = 0, credits = 0, hasFail = false, hasExcluded = false, hasInvalid = false;
+
+                rows.querySelectorAll('[data-gpa-row]').forEach(function (row) {
+                    if (type === 'sgpa') {
+                        var grade = row.querySelector('[data-gpa-grade]').value;
+                        var ch = parseInt(row.querySelector('[data-gpa-credits]').value, 10);
+                        if (grade === '') return;
+                        if (grade === 'x') { hasExcluded = true; return; }
+                        var gp = Math.round(parseFloat(grade) * 100);
+                        if (gp === 0) hasFail = true;
+                        points100 += gp * ch;
+                        credits += ch;
+                    } else {
+                        var gpaInput = row.querySelector('[data-gpa-semester-gpa]');
+                        var chInput = row.querySelector('[data-gpa-semester-credits]');
+                        var g = parseFloat(gpaInput.value);
+                        var c = parseInt(chInput.value, 10);
+                        var gpaBad = gpaInput.value !== '' && !(g >= 0 && g <= 4);
+                        var chBad = chInput.value !== '' && !(c >= 1 && String(c) === chInput.value.trim());
+                        gpaInput.setAttribute('aria-invalid', gpaBad ? 'true' : 'false');
+                        chInput.setAttribute('aria-invalid', chBad ? 'true' : 'false');
+                        if (gpaBad || chBad) hasInvalid = true;
+                        if (gpaBad || chBad || isNaN(g) || isNaN(c)) return;
+                        points100 += Math.round(g * 100) * c;
+                        credits += c;
+                    }
+                });
+
+                var gpa = gpaHundredths(points100, credits);
+                result.querySelector('[data-gpa-value]').textContent = gpa === null ? '—' : (gpa / 100).toFixed(2);
+                result.querySelector('[data-gpa-credits-total]').textContent = credits;
+                result.querySelector('[data-gpa-points-total]').textContent = (points100 / 100).toFixed(2);
+
+                var notes = result.querySelector('[data-gpa-notes]');
+                notes.innerHTML = '';
+                if (hasInvalid) {
+                    notes.appendChild(note('A row marked in red was skipped: GPA must be 0–4 and credit hours a whole number of 1 or more.', 'warn'));
+                }
+                if (gpa === null) {
+                    notes.appendChild(note(type === 'sgpa'
+                        ? 'Pick a grade for at least one course to see your SGPA.'
+                        : 'Enter a GPA (0–4) and credit hours for at least one semester.', 'info'));
+                    return;
+                }
+
+                if (type === 'sgpa') {
+                    notes.appendChild(gpa >= 200
+                        ? note('At or above 2.00: good academic standing for this semester.', 'good')
+                        : note('Below 2.00: an academic deficiency. The first time puts you on probation (max two in a BS).', 'warn'));
+                    if (hasFail) notes.appendChild(note('F/SF counts 0.00 points but its credit hours still count. Repeat the course to clear it.', 'warn'));
+                    if (hasExcluded) notes.appendChild(note('W and I grades are left out of the GPA, as per LGU policy.', 'info'));
+                } else {
+                    if (gpa >= 350) notes.appendChild(note('3.50 or above: meets the minimum CGPA for LGU academic medals.', 'good'));
+                    notes.appendChild(gpa >= 200
+                        ? note('At or above 2.00: good standing, and meets the minimum CGPA for a BS degree.', 'good')
+                        : note('Below 2.00: academic deficiency. Improve D/C- courses (up to 5) to raise your CGPA.', 'warn'));
+                }
+            }
+
+            rows.addEventListener('input', compute);
+            rows.addEventListener('change', compute);
+
+            rows.addEventListener('click', function (e) {
+                var btn = e.target.closest('[data-gpa-remove]');
+                if (!btn) return;
+                if (rows.children.length > 1) {
+                    btn.closest('[data-gpa-row]').remove();
+                    if (addBtn) addBtn.focus();
+                } else {
+                    reset();
+                }
+                compute();
+            });
+
+            if (addBtn) {
+                addBtn.addEventListener('click', function () {
+                    var row = addRow();
+                    var first = row.querySelector('input, select');
+                    if (first) first.focus();
+                    compute();
+                });
+            }
+
+            var resetBtn = calc.querySelector('[data-gpa-reset]');
+            if (resetBtn) resetBtn.addEventListener('click', reset);
+
+            reset();
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         initThemeToggle();
         initMobileNav();
@@ -436,6 +567,7 @@
         initShowMore();
         initAccordions();
         initLecturesFilter();
+        initGpaCalculators();
         initHeaderAuth();
         initGoogleSignIn();
     });

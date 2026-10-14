@@ -17,6 +17,7 @@ $navActive = function (array $paths, array $prefixes = []) use ($currentPath): s
     }
     return '';
 };
+$calculatorPaths = ['/lgu-sgpa-calculator', '/lgu-cgpa-calculator'];
 ?>
 <header class="site-header">
     <div class="container nav-container">
@@ -43,6 +44,13 @@ $navActive = function (array $paths, array $prefixes = []) use ($currentPath): s
                     </div>
                 </li>
                 <li><a href="/lectures" class="nav-link<?= $navActive(['/lectures']) ?>">Lectures</a></li>
+                <li class="dropdown">
+                    <a href="/lgu-cgpa-calculator" class="nav-link<?= $navActive($calculatorPaths) ?>">Calculators ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="/lgu-sgpa-calculator" class="dropdown-item">SGPA Calculator</a>
+                        <a href="/lgu-cgpa-calculator" class="dropdown-item">CGPA Calculator</a>
+                    </div>
+                </li>
                 <li><a href="/about-lgu" class="nav-link<?= $navActive(['/about-lgu']) ?>">About LGU</a></li>
                 <li><a href="/alumni" class="nav-link<?= $navActive(['/alumni']) ?>">Alumni</a></li>
                 <li><a href="/contact-us" class="nav-link<?= $navActive(['/contact-us']) ?>">Contact</a></li>
@@ -194,6 +202,13 @@ $navActive = function (array $paths, array $prefixes = []) use ($currentPath): s
                 </details>
             </li>
             <li><a href="/lectures" class="<?= trim($navActive(['/lectures'])) ?>">Lectures</a></li>
+            <li>
+                <details class="mobile-nav__group" <?= $navActive($calculatorPaths) ? ' open' : '' ?>>
+                    <summary class="<?= trim($navActive($calculatorPaths)) ?>">Calculators</summary>
+                    <a href="/lgu-sgpa-calculator" class="<?= trim($navActive(['/lgu-sgpa-calculator'])) ?>">SGPA Calculator</a>
+                    <a href="/lgu-cgpa-calculator" class="<?= trim($navActive(['/lgu-cgpa-calculator'])) ?>">CGPA Calculator</a>
+                </details>
+            </li>
             <li><a href="/about-lgu" class="<?= trim($navActive(['/about-lgu'])) ?>">About LGU</a></li>
             <li><a href="/alumni" class="<?= trim($navActive(['/alumni'])) ?>">Alumni</a></li>
             <li><a href="/about-us" class="<?= trim($navActive(['/about-us'])) ?>">About Us</a></li>

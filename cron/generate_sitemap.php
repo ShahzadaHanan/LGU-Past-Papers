@@ -22,7 +22,9 @@ $staticPages = [
     '/about-lgu',
     '/about-us',
     '/alumni',
-    '/contact-us'
+    '/contact-us',
+    '/lgu-sgpa-calculator',
+    '/lgu-cgpa-calculator',
 ];
 
 foreach ($staticPages as $page) {

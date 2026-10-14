@@ -38,6 +38,8 @@ $router->get('/alumni', HomeController::class, 'alumni');
 $router->get('/contact-us', HomeController::class, 'contactUs');
 $router->get('/fee-structure', HomeController::class, 'feeStructure');
 $router->get('/scholarships', HomeController::class, 'scholarships');
+$router->get('/lgu-sgpa-calculator', HomeController::class, 'sgpaCalculator');
+$router->get('/lgu-cgpa-calculator', HomeController::class, 'cgpaCalculator');
 $router->get('/roadmaps', HomeController::class, 'roadmaps');
 $router->get('/roadmaps/{slug}', HomeController::class, 'roadmapDetail');
 
