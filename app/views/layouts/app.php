@@ -67,6 +67,17 @@ $gaId = $siteSettings['ga_measurement_id'] ?? null;
 <?php require basePath('app/views/partials/news-bar.php'); ?>
 <?php require basePath('app/views/partials/header.php'); ?>
 
+<?php if ($flashError = $session->flash('error')): ?>
+    <div class="container" style="margin-top:16px;">
+        <p class="alert alert-danger"><?= htmlspecialchars($flashError, ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+<?php endif; ?>
+<?php if ($flashSuccess = $session->flash('success')): ?>
+    <div class="container" style="margin-top:16px;">
+        <p class="alert alert-success"><?= htmlspecialchars($flashSuccess, ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+<?php endif; ?>
+
 <?= $content ?>
 
 <?php require basePath('app/views/partials/footer.php'); ?>

@@ -49,6 +49,14 @@ class PaperSubmissionRepository
         return $this->db->execute("UPDATE paper_submissions SET status = ? WHERE id = ?", [$status, $id]);
     }
 
+    public function markPublished(int $id, int $paperId): bool
+    {
+        return $this->db->execute(
+            "UPDATE paper_submissions SET status = 'approved', published_paper_id = ? WHERE id = ?",
+            [$paperId, $id]
+        );
+    }
+
     public function getByStatus(string $status): array
     {
         $rows = $this->db->fetchAll("SELECT * FROM paper_submissions WHERE status = ? ORDER BY id DESC", [$status]);

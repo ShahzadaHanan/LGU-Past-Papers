@@ -31,36 +31,84 @@
                     </a>
                 </div>
             </div>
+
+            <?php if (!empty($paper['solution_text']) || !empty($paper['solution_image'])): ?>
+                <div class="fee-panel" style="margin-top:24px;">
+                    <div class="fee-panel__header" style="cursor:default;">
+                        <span class="fee-panel__title">Solution</span>
+                    </div>
+                    <div class="fee-panel__inner" style="border-top:1px solid var(--border-color);">
+                        <?php if (!empty($paper['solution_text'])): ?>
+                            <div class="card-text" style="font-size:0.98rem; line-height:1.8; white-space:pre-line;">
+                                <?= nl2br(htmlspecialchars($paper['solution_text'], ENT_QUOTES, 'UTF-8')) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($paper['solution_image'])): ?>
+                            <div style="<?= !empty($paper['solution_text']) ? 'margin-top:20px; padding-top:20px; border-top:1px dashed var(--border-color);' : '' ?>">
+                                <a href="<?= htmlspecialchars($paper['solution_image'], ENT_QUOTES, 'UTF-8') ?>" data-lightbox-trigger>
+                                    <img src="<?= htmlspecialchars($paper['solution_image'], ENT_QUOTES, 'UTF-8') ?>" alt="Solution sheet for <?= htmlspecialchars($paper['subject_name'], ENT_QUOTES, 'UTF-8') ?>" style="width:100%; max-width:420px; height:auto; border-radius:var(--radius-md); cursor:zoom-in; display:block; margin:0 auto;">
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
 
         <div style="flex:1 1 300px; display:flex; flex-direction:column; gap:24px;">
-            <?php if (!empty($paper['solution_image'])): ?>
-                <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:22px;">
-                    <h3 style="font-size:1.1rem; margin-bottom:10px; color:var(--primary-color);">Solution Available</h3>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:16px;">An admin-verified solution sheet has been uploaded for this paper.</p>
-                    <a href="<?= htmlspecialchars($paper['solution_image'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener" class="btn btn-secondary btn-block">View Solution Sheet</a>
+            <div class="fee-panel">
+                <div class="fee-panel__header" style="cursor:default;">
+                    <span class="fee-panel__title">Related Papers</span>
                 </div>
-            <?php endif; ?>
-
-            <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:22px;">
-                <h3 style="font-size:1.1rem; margin-bottom:14px; color:var(--primary-color);">Related Papers</h3>
-                <?php if (empty($related)): ?>
-                    <p style="color:var(--text-muted); font-size:0.9rem;">No related papers found for this exam type yet.</p>
-                <?php else: ?>
-                    <div style="display:flex; flex-direction:column; gap:12px;">
-                        <?php foreach ($related as $rel): ?>
-                            <a href="/paper/<?= htmlspecialchars($rel['slug'], ENT_QUOTES, 'UTF-8') ?>" style="text-decoration:none; color:var(--text-color);">
-                                <strong style="font-size:0.92rem; display:block;"><?= htmlspecialchars($rel['subject_name'], ENT_QUOTES, 'UTF-8') ?></strong>
-                                <span style="font-size:0.8rem; color:var(--text-muted);"><?= htmlspecialchars($rel['session'], ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars(ucwords(str_replace('_', ' ', $rel['exam_type'])), ENT_QUOTES, 'UTF-8') ?></span>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                <div class="fee-panel__inner" style="border-top:1px solid var(--border-color);">
+                    <?php if (empty($related)): ?>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">No related papers found for this exam type yet.</p>
+                    <?php else: ?>
+                        <div style="display:flex; flex-direction:column; gap:14px;">
+                            <?php foreach ($related as $rel): ?>
+                                <a href="/paper/<?= htmlspecialchars($rel['slug'], ENT_QUOTES, 'UTF-8') ?>" class="related-paper-row">
+                                    <strong><?= htmlspecialchars($rel['subject_name'], ENT_QUOTES, 'UTF-8') ?></strong>
+                                    <span><?= htmlspecialchars($rel['session'], ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars(ucwords(str_replace('_', ' ', $rel['exam_type'])), ENT_QUOTES, 'UTF-8') ?></span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
 
-            <a href="/lectures?category=<?= htmlspecialchars($department['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-accent btn-block">
-                Watch Related Lectures
-            </a>
+            <div class="fee-panel">
+                <div class="fee-panel__header" style="cursor:default;">
+                    <span class="fee-panel__title">Related Videos</span>
+                </div>
+                <div class="fee-panel__inner" style="border-top:1px solid var(--border-color);">
+                    <?php if (empty($relatedVideos)): ?>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">No related videos found for this degree yet.</p>
+                    <?php else: ?>
+                        <div class="related-videos-grid">
+                            <?php foreach ($relatedVideos as $video): ?>
+                                <a href="<?= htmlspecialchars($video['youtube_url'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener" class="related-video-row">
+                                    <span class="related-video-thumb" style="background-image:url('https://img.youtube.com/vi/<?= htmlspecialchars($video['youtube_video_id'], ENT_QUOTES, 'UTF-8') ?>/hqdefault.jpg');">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="related-video-meta">
+                                        <strong><?= htmlspecialchars($video['title'], ENT_QUOTES, 'UTF-8') ?></strong>
+                                        <span><?= htmlspecialchars($video['subject_name'] ?? $video['category_name'] ?? 'LGU Hub', ENT_QUOTES, 'UTF-8') ?></span>
+                                    </span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div style="margin-top:16px; text-align:center;">
+                        <a href="/lectures?department=<?= htmlspecialchars($department['slug'], ENT_QUOTES, 'UTF-8') ?>&degree=<?= htmlspecialchars($degree['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-secondary btn-sm">
+                            See More Videos
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>

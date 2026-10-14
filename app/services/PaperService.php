@@ -62,6 +62,29 @@ class PaperService
         return $this->repository->create($data);
     }
 
+    /**
+     * Publishes an approved public paper submission as a real Paper. The
+     * submission's image is already uploaded and validated — it's adopted
+     * (moved) into the papers directory rather than re-uploaded, since
+     * re-running upload validation on a server-side file path (not a fresh
+     * $_FILES entry) wouldn't add any real security value here.
+     */
+    public function publishFromSubmission(array $data, string $submissionImagePath, ?array $solutionImage = null): ?int
+    {
+        $slug = Slug::make(
+            ($data['subject_name'] ?? '') . '-' . ($data['session'] ?? '') . '-' . ($data['exam_type'] ?? '')
+        ) . '-' . substr(uniqid(), -5);
+
+        $data['paper_image'] = $this->fileUploadService->adopt($submissionImagePath, 'papers');
+        $data['slug'] = $slug;
+
+        if ($solutionImage && ($solutionImage['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
+            $data['solution_image'] = $this->fileUploadService->image($solutionImage, 'papers/solutions');
+        }
+
+        return $this->repository->createAndGetId($data);
+    }
+
     public function updatePaper(int $id, array $data, ?array $paperImage = null, ?array $solutionImage = null, ?array $downloadFile = null): bool
     {
         $existing = $this->getPaperById($id);

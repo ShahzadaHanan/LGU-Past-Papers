@@ -1,82 +1,44 @@
-<h1>Create Department</h1>
+<h1>Add Department</h1>
 
-<form
-method="POST"
-action="/admin/departments"
-enctype="multipart/form-data">
+<div class="card">
+<form method="POST" action="/admin/departments" enctype="multipart/form-data">
+    <?= \App\Helpers\Form::csrf($csrf) ?>
 
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" name="name" required>
+    </div>
 
-<input
-type="hidden"
-name="_token"
-value="<?= $csrf->token() ?>">
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="6"></textarea>
+    </div>
 
-<label>Name</label>
+    <div class="form-group">
+        <label for="hero_image">Hero Image</label>
+        <input id="hero_image" type="file" name="hero_image" accept="image/*">
+    </div>
 
-<input
-type="text"
-name="name">
+    <div class="form-group">
+        <label for="meta_title">Meta Title</label>
+        <input id="meta_title" type="text" name="meta_title">
+    </div>
 
-<br><br>
+    <div class="form-group">
+        <label for="meta_description">Meta Description</label>
+        <textarea id="meta_description" name="meta_description" rows="4"></textarea>
+    </div>
 
-<label>Description</label>
+    <div class="form-group">
+        <label for="display_order">Display Order</label>
+        <input id="display_order" type="number" name="display_order" value="0">
+    </div>
 
-<textarea
-name="description"
-rows="6"></textarea>
+    <div class="form-group">
+        <label><input type="checkbox" name="is_active" checked> Active</label>
+    </div>
 
-<br><br>
-
-<label>Hero Image</label>
-
-<input
-type="file"
-name="hero_image">
-
-<br><br>
-
-<label>Meta Title</label>
-
-<input
-type="text"
-name="meta_title">
-
-<br><br>
-
-<label>Meta Description</label>
-
-<textarea
-name="meta_description"
-rows="4"></textarea>
-
-<br><br>
-
-<label>Display Order</label>
-
-<input
-type="number"
-name="display_order"
-value="0">
-
-<br><br>
-
-<label>
-
-<input
-type="checkbox"
-name="is_active"
-checked>
-
-Active
-
-</label>
-
-<br><br>
-
-<button>
-
-Save Department
-
-</button>
-
+    <button class="btn-primary" type="submit">Save Department</button>
+    <a class="btn-secondary" href="/admin/departments">Cancel</a>
 </form>
+</div>

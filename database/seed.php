@@ -57,7 +57,7 @@ $departments = [
     [
         'name' => 'Department of Computer Science',
         'slug' => 'computer-science',
-        'description' => 'Home to LGU\'s flagship BS and MS Computer Science programs, covering programming, algorithms, systems and AI.',
+        'description' => 'The Department of Computer Science is LGU\'s flagship computing department, offering both BS Computer Science and MS Computer Science. Students study the theoretical and practical foundations of computing — programming, data structures and algorithms, operating systems, computer networks, and database systems — building the problem-solving and software-engineering skills needed for careers in software development, systems architecture, and applied AI. Past papers and lectures on this platform cover the full undergraduate curriculum, from first-semester Programming Fundamentals through to Computer Architecture and beyond.',
         'subs' => [
             ['name' => 'BS Computer Science', 'slug' => 'bs-computer-science', 'depth' => 'deep', 'subjects' => [
                 'Programming Fundamentals', 'Object Oriented Programming', 'Data Structures & Algorithms',
@@ -71,7 +71,7 @@ $departments = [
     [
         'name' => 'Department of Software Engineering',
         'slug' => 'software-engineering',
-        'description' => 'Focused on the engineering discipline behind large-scale software: requirements, design, quality and delivery.',
+        'description' => 'The Department of Software Engineering offers BS Software Engineering, a program built around the engineering discipline behind large-scale software rather than programming alone. Coursework spans software requirements engineering, design and architecture, quality assurance, project management, and human-computer interaction, preparing graduates to lead software projects from specification through delivery. It is a natural fit for students who want to build and manage software systems at scale, not just write code.',
         'subs' => [
             ['name' => 'BS Software Engineering', 'slug' => 'bs-software-engineering', 'depth' => 'deep', 'subjects' => [
                 'Software Requirements Engineering', 'Software Design & Architecture', 'Web Engineering',
@@ -83,7 +83,7 @@ $departments = [
     [
         'name' => 'Department of Information Technology',
         'slug' => 'information-technology',
-        'description' => 'Applied computing programs covering networks, security, and enterprise IT systems.',
+        'description' => 'The Department of Information Technology runs BS Information Technology and MS Information Technology, focused on the applied, infrastructure side of computing — networks, information security, enterprise systems, and IT governance. Where Computer Science emphasises theory and Software Engineering emphasises large-scale software delivery, IT trains students to design, secure, and administer the systems organisations actually run on, from campus networks to enterprise databases.',
         'subs' => [
             ['name' => 'BS Information Technology', 'slug' => 'bs-information-technology', 'depth' => 'medium', 'subjects' => [
                 'Web Technologies', 'Information Security', 'Network Administration', 'IT Project Management', 'Database Systems',
@@ -98,7 +98,7 @@ $departments = [
     [
         'name' => 'Department of Management Sciences',
         'slug' => 'management-sciences',
-        'description' => 'Business education across management, finance, and marketing — preparing graduates for corporate and entrepreneurial careers.',
+        'description' => 'The Department of Management Sciences is LGU\'s business school, offering BBA, BS Accounting & Finance, and MBA programs. Students study management, finance, marketing, and accounting, developing the analytical and leadership skills needed for corporate careers, financial roles, and entrepreneurship. Coursework covers everything from Principles of Management and Financial Accounting at the undergraduate level through to Strategic Management and Corporate Finance at the graduate level.',
         'subs' => [
             ['name' => 'BBA', 'slug' => 'bba', 'depth' => 'medium', 'subjects' => [
                 'Principles of Management', 'Financial Accounting', 'Marketing Management', 'Business Communication', 'Business Statistics',
@@ -114,7 +114,7 @@ $departments = [
     [
         'name' => 'Department of Psychology',
         'slug' => 'psychology',
-        'description' => 'Programs in applied and clinical psychology, combining theory with practical assessment and counseling training.',
+        'description' => 'The Department of Psychology offers BS Applied Psychology and BS Clinical Psychology, combining psychological theory with practical assessment and counseling training. Students study cognitive, developmental, and abnormal psychology alongside clinical assessment and psychopathology, preparing for careers in counseling, clinical practice, human resources, and further postgraduate study in psychology.',
         'subs' => [
             ['name' => 'BS Applied Psychology', 'slug' => 'bs-applied-psychology', 'depth' => 'medium', 'subjects' => [
                 'Introduction to Psychology', 'Cognitive Psychology', 'Developmental Psychology', 'Abnormal Psychology',
@@ -127,7 +127,7 @@ $departments = [
     [
         'name' => 'Department of Criminology & Forensic Sciences',
         'slug' => 'criminology-forensic-sciences',
-        'description' => 'One of the few programs of its kind in Lahore, pairing criminology theory with hands-on forensic science training.',
+        'description' => 'The Department of Criminology & Forensic Sciences runs BS Criminology & Forensic Sciences, one of the few programs of its kind in Lahore. It pairs criminology theory — the study of crime, criminal law, and victimology — with hands-on forensic science training, preparing graduates for careers in law enforcement, forensic investigation, legal research, and criminal justice policy.',
         'subs' => [
             ['name' => 'BS Criminology & Forensic Sciences', 'slug' => 'bs-criminology-forensic-sciences', 'depth' => 'light', 'subjects' => [
                 'Introduction to Criminology', 'Forensic Science Fundamentals', 'Criminal Law', 'Victimology',
@@ -137,7 +137,7 @@ $departments = [
     [
         'name' => 'Department of Islamic Sciences',
         'slug' => 'islamic-sciences',
-        'description' => 'Study of Quranic sciences, Islamic history and comparative religion within a modern academic framework.',
+        'description' => 'The Department of Islamic Sciences offers BS Islamic Studies, covering Quranic sciences, Islamic history, and comparative religion within a modern academic framework. The program is designed for students seeking a rigorous, contemporary grounding in Islamic scholarship alongside the analytical skills of a modern university degree.',
         'subs' => [
             ['name' => 'BS Islamic Studies', 'slug' => 'bs-islamic-studies', 'depth' => 'light', 'subjects' => [
                 'Quranic Studies', 'Islamic History', 'Comparative Religion',
@@ -147,7 +147,7 @@ $departments = [
     [
         'name' => 'Department of Mass Communication',
         'slug' => 'mass-communication',
-        'description' => 'Media, journalism and communication studies with hands-on production and broadcast training.',
+        'description' => 'The Department of Mass Communication runs BS Mass Communication, covering media theory, journalism, and communication studies alongside hands-on production and broadcast training. Students study media writing, broadcast journalism, and advertising, preparing for careers in journalism, media production, public relations, and digital content.',
         'subs' => [
             ['name' => 'BS Mass Communication', 'slug' => 'bs-mass-communication', 'depth' => 'medium', 'subjects' => [
                 'Introduction to Mass Communication', 'Media Writing', 'Broadcast Journalism', 'Advertising',
@@ -157,7 +157,7 @@ $departments = [
     [
         'name' => 'Department of International Relations & Political Science',
         'slug' => 'international-relations-political-science',
-        'description' => 'Study of global politics, diplomacy and foreign policy with a focus on South Asia and the wider region.',
+        'description' => 'The Department of International Relations & Political Science offers BS International Relations, focused on global politics, diplomacy, and foreign policy with particular attention to South Asia and the wider region. Coursework in international law and foreign policy analysis prepares graduates for careers in diplomacy, policy research, journalism, and international organisations.',
         'subs' => [
             ['name' => 'BS International Relations', 'slug' => 'bs-international-relations', 'depth' => 'light', 'subjects' => [
                 'Introduction to International Relations', 'International Law', 'Foreign Policy Analysis',
@@ -169,7 +169,7 @@ $departments = [
     [
         'name' => 'Department of Physics',
         'slug' => 'physics',
-        'description' => 'Core and applied physics programs, including electronics, for students pursuing science and engineering careers.',
+        'description' => 'The Department of Physics offers BS Physics and BS Electronics, covering core and applied physics for students pursuing science and engineering careers. The curriculum spans mechanics, electromagnetism, and thermodynamics through to circuit analysis and digital electronics, giving graduates a strong quantitative foundation for further study or technical careers.',
         'subs' => [
             ['name' => 'BS Physics', 'slug' => 'bs-physics', 'depth' => 'light', 'subjects' => [
                 'Mechanics', 'Electromagnetism', 'Thermodynamics',
@@ -182,7 +182,7 @@ $departments = [
     [
         'name' => 'Department of Mathematics',
         'slug' => 'mathematics',
-        'description' => 'A rigorous foundation in pure and applied mathematics for analytical and research-driven careers.',
+        'description' => 'The Department of Mathematics offers BS Mathematics, a rigorous foundation in pure and applied mathematics. Students study calculus, linear algebra, and real analysis, developing the analytical and abstract reasoning skills that open doors to research, data science, education, and quantitative careers across industries.',
         'subs' => [
             ['name' => 'BS Mathematics', 'slug' => 'bs-mathematics', 'depth' => 'light', 'subjects' => [
                 'Calculus I', 'Linear Algebra', 'Real Analysis',
@@ -192,7 +192,7 @@ $departments = [
     [
         'name' => 'Department of Biological Sciences',
         'slug' => 'biological-sciences',
-        'description' => 'Life sciences programs spanning biotechnology, microbiology, zoology and biochemistry.',
+        'description' => 'The Department of Biological Sciences offers BS Biotechnology, BS Microbiology, BS Zoology, and BS Biochemistry, spanning the life sciences from molecular biology to whole-organism biology. Students studying here go on to careers and further study in biotechnology, healthcare, and research, with coursework in cell biology, genetics, immunology, and comparative anatomy depending on the specific program.',
         'subs' => [
             ['name' => 'BS Biotechnology', 'slug' => 'bs-biotechnology', 'depth' => 'light', 'subjects' => [
                 'Cell Biology', 'Genetics', 'Molecular Biology',
@@ -211,7 +211,7 @@ $departments = [
     [
         'name' => 'Department of Allied Health Sciences',
         'slug' => 'allied-health-sciences',
-        'description' => 'Applied health science education, including nutrition and dietetics, for clinical and community careers.',
+        'description' => 'The Department of Allied Health Sciences offers BS Nutrition & Dietetics, an applied health science program preparing graduates for clinical and community careers. Coursework in human nutrition and dietetics fundamentals equips students to work as dietitians, nutrition counselors, and public health professionals.',
         'subs' => [
             ['name' => 'BS Nutrition & Dietetics', 'slug' => 'bs-nutrition-dietetics', 'depth' => 'light', 'subjects' => [
                 'Human Nutrition', 'Dietetics Fundamentals',
@@ -223,7 +223,7 @@ $departments = [
     [
         'name' => 'Department of English',
         'slug' => 'english',
-        'description' => 'English language, linguistics and literature programs building strong communication and analytical skills.',
+        'description' => 'The Department of English offers BS English, covering English composition, British literature, and linguistics. The program builds strong written and analytical communication skills, preparing graduates for careers in education, media, publishing, and any field where clear writing and critical reading matter.',
         'subs' => [
             ['name' => 'BS English', 'slug' => 'bs-english', 'depth' => 'light', 'subjects' => [
                 'English Composition', 'British Literature', 'Linguistics',
@@ -233,7 +233,7 @@ $departments = [
     [
         'name' => 'Department of Urdu',
         'slug' => 'urdu',
-        'description' => 'Advanced study of Urdu language, literature and classical adab.',
+        'description' => 'The Department of Urdu offers BS Urdu, an advanced study of Urdu language, literature, and classical adab (the Urdu literary tradition). Coursework in Urdu Adab and Urdu Zaban-o-Qawaid (grammar) prepares graduates for careers in education, media, translation, and Urdu literary scholarship.',
         'subs' => [
             ['name' => 'BS Urdu', 'slug' => 'bs-urdu', 'depth' => 'light', 'subjects' => [
                 'Urdu Adab', 'Urdu Zaban-o-Qawaid',
@@ -321,6 +321,7 @@ foreach ($departments as $dept) {
 
     if ($existingDept) {
         $deptId = (int) $existingDept['id'];
+        $db->execute("UPDATE departments SET description = ? WHERE id = ?", [$dept['description'], $deptId]);
     } else {
         $db->execute(
             "INSERT INTO departments (name, slug, description, meta_title, meta_description, display_order, is_active)
@@ -346,8 +347,14 @@ foreach ($departments as $dept) {
 
         $existingSub = $db->fetch("SELECT id FROM sub_departments WHERE slug = ?", [$sub['slug']]);
 
+        $subjectSample = implode(', ', array_slice($sub['subjects'], 0, 3));
+        $subDescription = "{$sub['name']} is a degree program under the {$dept['name']} at Lahore Garrison University, "
+            . "with coursework including {$subjectSample} and more. Browse mid-term, final-term and summer past papers "
+            . "for this program below, organised by subject and exam type.";
+
         if ($existingSub) {
             $subId = (int) $existingSub['id'];
+            $db->execute("UPDATE sub_departments SET description = ? WHERE id = ?", [$subDescription, $subId]);
         } else {
             $db->execute(
                 "INSERT INTO sub_departments (department_id, name, slug, description, meta_title, meta_description, display_order, is_active)
@@ -356,7 +363,7 @@ foreach ($departments as $dept) {
                     $deptId,
                     $sub['name'],
                     $sub['slug'],
-                    "Mid-term, final-term and summer past papers for {$sub['name']} at Lahore Garrison University, organised by course.",
+                    $subDescription,
                     "{$sub['name']} Past Papers | LGU Hub",
                     "Free {$sub['name']} past papers at LGU — mid-term, final-term, organised by course and session.",
                     $subOrder,
@@ -371,6 +378,180 @@ foreach ($departments as $dept) {
 
 echo "  - {$deptOrder} departments, {$totalSubs} degree programs seeded.\n";
 echo "  - {$totalPapers} past papers seeded.\n";
+
+/* ---------------------------------------------------------------------
+ | Degree reconciliation against the real LGU roadmap catalogue
+ | (HomeController::ROADMAPS / SEMESTER_CURRICULA — the same data that
+ | powers the public /roadmaps pages, cloned from lgu.edu.pk/all-road-map/
+ | and each program's own official roadmap page). Pulled via reflection
+ | instead of re-typing ~30 degrees here, so this stays in sync with that
+ | one real, verified source rather than drifting from a second copy.
+ |
+ | For every roadmap-listed degree, this upserts the matching
+ | sub_department by slug so its name and department match the real
+ | roadmap exactly, then seeds a `subjects` row per real course in that
+ | degree's transcribed semester curriculum (the "number of subjects" the
+ | roadmap actually documents) — admin-manageable via /admin/subjects,
+ | independent of the free-text subject_name already used on papers.
+ * ------------------------------------------------------------------- */
+$roadmapReflection = new \ReflectionClass(\App\Controllers\HomeController::class);
+$roadmapPrograms = $roadmapReflection->getConstant('ROADMAPS');
+$roadmapCurricula = $roadmapReflection->getConstant('SEMESTER_CURRICULA');
+
+// The roadmap's own `dept` slugs match our real department slugs 1:1
+// except Computer Science, whose active department row carries a
+// different slug (`department-of-computer-science`) than the generic
+// `computer-science` slug used elsewhere in this file — a known,
+// previously-flagged duplicate-department situation. Remap here so the
+// reconciliation lands on the real, active row rather than its inactive
+// duplicate.
+$roadmapDeptSlugMap = [
+    'computer-science' => 'department-of-computer-science',
+];
+
+// Degrees that already existed under a generic/placeholder name before
+// the real roadmap data was cross-referenced — renamed in place (by id)
+// so existing papers/videos already attached to them keep their FK intact
+// instead of being orphaned by a delete+recreate.
+$degreeSlugRenames = [
+    'bs-data-science' => 'bs-information-technology',
+    'ms-data-science' => 'ms-information-technology',
+    'mba-business' => 'mba',
+    'bs-psychology' => 'bs-applied-psychology',
+    'bs-criminology-crime-scene' => 'bs-criminology-forensic-sciences',
+    'bs-computational-mathematics-ai' => 'bs-mathematics',
+    'bs-human-nutrition-dietetics' => 'bs-nutrition-dietetics',
+];
+
+function roadmapDegreeDescription(string $title, string $deptName, array $program): string
+{
+    $facts = [];
+    if (!empty($program['duration'])) {
+        $facts[] = "{$program['duration']} program";
+    }
+    if (!empty($program['semesters'])) {
+        $facts[] = "{$program['semesters']} semesters";
+    }
+    if (!empty($program['credit_hours'])) {
+        $facts[] = "{$program['credit_hours']} credit hours";
+    }
+    $factsText = $facts ? ' (' . implode(', ', $facts) . ')' : '';
+
+    return "{$title} is a degree program{$factsText} offered under the {$deptName} at Lahore Garrison University, "
+        . "following the university's official semester-by-semester roadmap. Browse mid-term, final-term and summer "
+        . "past papers for this program below, organised by subject and exam type.";
+}
+
+$reconciledCount = 0;
+$insertedDegreeCount = 0;
+
+foreach ($roadmapPrograms as $programs) {
+    foreach ($programs as $program) {
+        $realDeptSlug = $roadmapDeptSlugMap[$program['dept']] ?? $program['dept'];
+        $deptRow = $db->fetch("SELECT id, name FROM departments WHERE slug = ? AND is_active = 1", [$realDeptSlug]);
+
+        if (!$deptRow) {
+            // No matching real department seeded for this roadmap program —
+            // nothing to reconcile against, skip rather than guess.
+            continue;
+        }
+
+        $deptId = (int) $deptRow['id'];
+        $description = roadmapDegreeDescription($program['title'], $deptRow['name'], $program);
+        $metaDescription = "Free {$program['title']} past papers at LGU — mid-term, final-term, organised by course and session.";
+
+        $existingBySlug = $db->fetch("SELECT id FROM sub_departments WHERE slug = ?", [$program['slug']]);
+
+        if ($existingBySlug) {
+            $db->execute(
+                "UPDATE sub_departments SET department_id = ?, name = ?, description = ? WHERE id = ?",
+                [$deptId, $program['title'], $description, (int) $existingBySlug['id']]
+            );
+            $reconciledCount++;
+            continue;
+        }
+
+        $oldSlug = $degreeSlugRenames[$program['slug']] ?? null;
+        $existingByOldSlug = $oldSlug ? $db->fetch("SELECT id FROM sub_departments WHERE slug = ?", [$oldSlug]) : null;
+
+        if ($existingByOldSlug) {
+            $db->execute(
+                "UPDATE sub_departments SET department_id = ?, name = ?, slug = ?, description = ? WHERE id = ?",
+                [$deptId, $program['title'], $program['slug'], $description, (int) $existingByOldSlug['id']]
+            );
+            $reconciledCount++;
+            continue;
+        }
+
+        $nextOrder = (int) $db->fetch(
+            "SELECT COALESCE(MAX(display_order), 0) + 1 AS n FROM sub_departments WHERE department_id = ?",
+            [$deptId]
+        )['n'];
+
+        $db->execute(
+            "INSERT INTO sub_departments (department_id, name, slug, description, meta_title, meta_description, display_order, is_active)
+             VALUES (?, ?, ?, ?, ?, ?, ?, 1)",
+            [
+                $deptId,
+                $program['title'],
+                $program['slug'],
+                $description,
+                "{$program['title']} Past Papers | LGU Hub",
+                $metaDescription,
+                $nextOrder,
+            ]
+        );
+        $insertedDegreeCount++;
+    }
+}
+
+echo "  - Roadmap reconciliation: {$reconciledCount} degrees updated, {$insertedDegreeCount} degrees added.\n";
+
+// Subjects — one row per real course in each degree's transcribed
+// semester curriculum, deduped by title (some roadmap table cells only
+// verified a course code with no title yet — those are skipped rather
+// than seeding a blank subject name).
+$subjectsInserted = 0;
+
+foreach ($roadmapCurricula as $degreeSlug => $semesters) {
+    $subDept = $db->fetch("SELECT id FROM sub_departments WHERE slug = ?", [$degreeSlug]);
+
+    if (!$subDept) {
+        continue;
+    }
+
+    $subDeptId = (int) $subDept['id'];
+    $seenTitles = [];
+    $order = 0;
+
+    foreach ($semesters as $semesterNumber => $courses) {
+        foreach ($courses as $course) {
+            $title = trim((string) ($course['title'] ?? ''));
+
+            if ($title === '') {
+                continue;
+            }
+
+            $key = mb_strtolower($title);
+
+            if (isset($seenTitles[$key])) {
+                continue;
+            }
+
+            $seenTitles[$key] = true;
+            $order++;
+
+            $db->execute(
+                "INSERT IGNORE INTO subjects (sub_department_id, name, code, semester, display_order, is_active)
+                 VALUES (?, ?, ?, ?, ?, 1)",
+                [$subDeptId, $title, $course['code'] ?? null, (int) $semesterNumber, $order]
+            );
+            $subjectsInserted++;
+        }
+    }
+}
+
+echo "  - {$subjectsInserted} subjects seeded from roadmap curricula (existing rows left untouched).\n";
 
 /* ---------------------------------------------------------------------
  | Hero slides — real campus photo + crest, not placeholder paths.
@@ -399,16 +580,23 @@ $contentBlocks = [
     [
         'page_key' => 'home',
         'heading' => 'Why Students Choose LGU Hub',
-        'body' => '<p>LGU Hub exists because finding a specific past paper for a specific course, in a specific semester, at Lahore Garrison University used to mean scrolling through months of WhatsApp group history or asking around and hoping someone still had the file. We rebuilt that experience from scratch: every past paper, lecture and class booking on this platform is organised the exact way a student actually searches — by department, then by degree program, then by exam type, whether that is a mid-term, a final, or a summer repeat. Fifteen departments, dozens of degree programs and a growing archive of mid-term and final-term papers are indexed here, searchable in seconds instead of scattered across a dozen group chats nobody can search properly. But LGU Hub is not only about exam preparation. Understanding why Lahore Garrison University itself is worth the years you will spend here matters just as much — so alongside the papers and lectures, we have put together independent, plain-language guides to three things every prospective and current student asks about: how much a degree actually costs, what financial help is available, and what your semester-by-semester journey through the degree looks like from day one.</p>'
+        'body' => '<p>LGU Hub exists because finding a specific past paper for a specific course, in a specific semester, at Lahore Garrison University used to mean scrolling through months of WhatsApp group history or asking around and hoping someone still had the file. We rebuilt that experience from scratch: every past paper, lecture and class booking on this platform is organised the exact way a student actually searches — by department, then by degree program, then by exam type, whether that is a mid-term, a final, or a summer repeat. Fifteen departments, dozens of degree programs and a growing archive of mid-term and final-term papers are indexed here, searchable in seconds instead of scattered across a dozen group chats nobody can search properly. But LGU Hub is not only about exam preparation. Understanding why Lahore Garrison University itself is worth the years you will spend here matters just as much — so alongside the papers and lectures, we have put together independent, plain-language guides to four things every prospective and current student asks about: how the admissions process actually works, how much a degree actually costs, what financial help is available, and what your semester-by-semester journey through the degree looks like from day one.</p>'
+
+            . '<h3>A Clear Path from Application to Enrollment</h3>'
+            . '<p>Getting from "interested" to "enrolled" at Lahore Garrison University runs through one place: LGU\'s own official admissions portal, not through us. Every program we index — whether that is BS Computer Science, BBA, BS Psychology or any of the other fifteen departments on this platform — has its own eligibility criteria (typically twelve years of education with a minimum aggregate percentage, verified against your specific program), its own intake cycle, and its own online application process, and all of it is handled directly by LGU\'s admissions office rather than by any third party. What we can do here is make sure you walk into that application already informed: you already know what the semester-by-semester roadmap looks like from our roadmap hub, what a semester actually costs from our fee-structure guide, and which of LGU\'s seven scholarship categories you might qualify for, before you have even opened a form. That is the order most successful applicants actually go in — research the program, understand the cost and roadmap, then apply — rather than applying first and discovering the details afterward. When you are ready to start, the admissions portal is where you create your account, upload your documents, and track your application status in real time.</p>'
+            . '<div class="content-block-cta"><a href="https://admissions.lgu.edu.pk/" target="_blank" rel="noopener" class="btn btn-accent btn-sm">Start Your Application on LGU Admissions</a></div>'
 
             . '<h3>A Structured, Faculty-by-Faculty Fee System</h3>'
             . '<p>One of the more reassuring things about LGU\'s cost structure is that it is not a single, opaque number — it is broken down clearly by faculty, so a Computer Sciences student, a Social Sciences student and a Basic Sciences student each see a <a href="/fee-structure">fee structure</a> genuinely built around their own program rather than a one-size-fits-all figure. Every program carries two components: a one-time admission fee due when you join, and a predictable per-semester fee that repeats for the length of your degree — typically eight semesters for a four-year BS program, and fewer for MS and MBA tracks. Because the structure is published faculty by faculty (Computer Sciences programs like BSCS, BSSE, BSIT and BS Data Science are grouped separately from Social Sciences programs like BBA, Psychology or Criminology, which are in turn separate from Basic Sciences and Languages), you can actually plan a semester\'s budget around it instead of being surprised mid-semester. Our <a href="/fee-structure">fee structure guide</a> walks through exactly how this breakdown works and links straight to LGU\'s own official fee page for the exact current PKR figures, since those are revised every admission cycle and we would rather point you to the source than publish numbers that go stale.</p>'
+            . '<div class="content-block-cta"><a href="/fee-structure" class="btn btn-accent btn-sm">View the Full Fee Structure</a></div>'
 
             . '<h3>Seven Scholarship and Financial-Assistance Categories</h3>'
             . '<p>Cost does not have to be the deciding factor, either. LGU runs seven distinct <a href="/scholarships">financial assistance categories</a>, and it is worth knowing all seven exist before you assume you do not qualify for any of them: Merit Based Scholarship for strong academic records, Performance Based Award for students who keep performing well semester after semester rather than only at entry, Defence Based Subsidy reflecting LGU\'s own Garrison heritage for students from serving or retired armed-forces families, Garrisonian &amp; Kinship Based Scholarship for students with a family connection to the Garrison community, LGU Employees Scholarship for children and dependents of LGU\'s own faculty and staff, Sports Based Scholarship for competitive athletes representing the university, and Need Based Scholarship for demonstrated financial hardship. Most students only ever hear about the merit scholarship because it is the most commonly advertised one — but the other six quietly help a meaningful number of students every semester. Our <a href="/scholarships">scholarships page</a> lists all seven exactly as published on LGU\'s official Scholarship dashboard, where applications and eligibility checks actually happen, since that process runs through the university\'s own admissions portal rather than through us.</p>'
+            . '<div class="content-block-cta"><a href="/scholarships" class="btn btn-accent btn-sm">See All Scholarship Categories</a></div>'
 
             . '<h3>A Clear Semester-by-Semester Roadmap</h3>'
-            . '<p>The last piece — and the one prospective students ask about most, and often cannot get a straight answer to before enrolling — is what the degree actually looks like semester by semester. Every LGU program has a published <a href="/roadmaps">roadmap</a>: which courses you will take in which semester, how many credit hours each one carries, and how core courses, domain electives and university requirements are sequenced across the full duration of the degree. We have built a roadmap hub covering every program we could verify against LGU\'s own published curriculum, and for BS Computer Science specifically, we have transcribed the complete eight-semester, forty-six-course breakdown directly from the university\'s own roadmap, so you can see exactly what Programming Fundamentals in semester one leads to by the time you reach Compiler Construction and Computer Architecture in semester six, Information Security and your internship in semester seven, and your final electives in semester eight. Knowing this upfront turns "four years, eight semesters" from an abstract phrase into an actual plan you can see before you commit to it.</p>',
+            . '<p>The last piece — and the one prospective students ask about most, and often cannot get a straight answer to before enrolling — is what the degree actually looks like semester by semester. Every LGU program has a published <a href="/roadmaps">roadmap</a>: which courses you will take in which semester, how many credit hours each one carries, and how core courses, domain electives and university requirements are sequenced across the full duration of the degree. We have built a roadmap hub covering every program we could verify against LGU\'s own published curriculum, and for BS Computer Science specifically, we have transcribed the complete eight-semester, forty-six-course breakdown directly from the university\'s own roadmap, so you can see exactly what Programming Fundamentals in semester one leads to by the time you reach Compiler Construction and Computer Architecture in semester six, Information Security and your internship in semester seven, and your final electives in semester eight. Knowing this upfront turns "four years, eight semesters" from an abstract phrase into an actual plan you can see before you commit to it.</p>'
+            . '<div class="content-block-cta"><a href="/roadmaps" class="btn btn-accent btn-sm">Browse Degree Roadmaps</a></div>',
         'display_order' => 1,
     ],
     [

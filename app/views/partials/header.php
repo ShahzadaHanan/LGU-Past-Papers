@@ -74,6 +74,99 @@ $navActive = function (array $paths, array $prefixes = []) use ($currentPath): s
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
+
+            <?php $googleClientId = env('GOOGLE_CLIENT_ID', ''); ?>
+
+            <?php if (!empty($currentSiteUser)): ?>
+                <div class="dropdown header-account">
+                    <a href="#" class="header-account__toggle" aria-label="Account menu">
+                        <?php if (!empty($currentSiteUser['profile_image'])): ?>
+                            <img src="<?= htmlspecialchars($currentSiteUser['profile_image'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="header-account__avatar">
+                        <?php else: ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        <?php endif; ?>
+                        <span class="header-account__name"><?= htmlspecialchars($currentSiteUser['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/account/logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="dropdown header-account">
+                    <a href="#" class="header-account__toggle" aria-label="Login or sign up">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Login</span>
+                    </a>
+
+                    <div class="dropdown-menu header-auth">
+                        <div class="header-auth__tabs">
+                            <button type="button" class="header-auth__tab active" data-auth-tab="login">Login</button>
+                            <button type="button" class="header-auth__tab" data-auth-tab="signup">Sign Up</button>
+                        </div>
+
+                        <form method="POST" action="/account/login" class="header-auth__panel" data-auth-panel="login">
+                            <?= \App\Helpers\Form::csrf($csrf) ?>
+                            <input type="hidden" name="redirect_to" value="<?= htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') ?>">
+
+                            <label for="header-login-email">Email</label>
+                            <input id="header-login-email" type="email" name="email" placeholder="you@example.com" required>
+
+                            <label for="header-login-password">Password</label>
+                            <input id="header-login-password" type="password" name="password" placeholder="Password" required>
+
+                            <button type="submit" class="btn btn-accent">Login</button>
+
+                            <?php if ($googleClientId !== ''): ?>
+                                <div class="header-auth__divider"><span>or</span></div>
+                                <div class="header-auth__google" data-google-signin
+                                     data-client-id="<?= htmlspecialchars($googleClientId, ENT_QUOTES, 'UTF-8') ?>"
+                                     data-csrf="<?= htmlspecialchars($csrf->token(), ENT_QUOTES, 'UTF-8') ?>"
+                                     data-redirect="<?= htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') ?>"></div>
+                            <?php endif; ?>
+                        </form>
+
+                        <form method="POST" action="/account/register" enctype="multipart/form-data" class="header-auth__panel" data-auth-panel="signup" hidden>
+                            <?= \App\Helpers\Form::csrf($csrf) ?>
+                            <input type="hidden" name="redirect_to" value="<?= htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') ?>">
+
+                            <label for="header-signup-name">Name</label>
+                            <input id="header-signup-name" type="text" name="name" placeholder="Your name" required>
+
+                            <label for="header-signup-email">Email</label>
+                            <input id="header-signup-email" type="email" name="email" placeholder="you@example.com" required>
+
+                            <label for="header-signup-password">Password</label>
+                            <input id="header-signup-password" type="password" name="password" placeholder="At least 8 characters" minlength="8" required>
+
+                            <label for="header-signup-password-confirm">Retype Password</label>
+                            <input id="header-signup-password-confirm" type="password" name="password_confirmation" placeholder="Retype password" minlength="8" required>
+
+                            <label for="header-signup-phone">Phone Number</label>
+                            <input id="header-signup-phone" type="tel" name="phone" placeholder="03xx-xxxxxxx" required>
+
+                            <label for="header-signup-avatar">Profile Picture (optional)</label>
+                            <input id="header-signup-avatar" type="file" name="profile_image" accept="image/*">
+
+                            <button type="submit" class="btn btn-accent">Sign Up</button>
+
+                            <?php if ($googleClientId !== ''): ?>
+                                <div class="header-auth__divider"><span>or</span></div>
+                                <div class="header-auth__google" data-google-signin
+                                     data-client-id="<?= htmlspecialchars($googleClientId, ENT_QUOTES, 'UTF-8') ?>"
+                                     data-csrf="<?= htmlspecialchars($csrf->token(), ENT_QUOTES, 'UTF-8') ?>"
+                                     data-redirect="<?= htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') ?>"></div>
+                            <?php endif; ?>
+                        </form>
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <button class="nav-toggle" data-nav-toggle aria-label="Open menu">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -105,6 +198,11 @@ $navActive = function (array $paths, array $prefixes = []) use ($currentPath): s
             <li><a href="/alumni" class="<?= trim($navActive(['/alumni'])) ?>">Alumni</a></li>
             <li><a href="/about-us" class="<?= trim($navActive(['/about-us'])) ?>">About Us</a></li>
             <li><a href="/contact-us" class="<?= trim($navActive(['/contact-us'])) ?>">Contact Us</a></li>
+            <?php if (!empty($currentSiteUser)): ?>
+                <li><a href="/account/logout">Logout (<?= htmlspecialchars($currentSiteUser['name'], ENT_QUOTES, 'UTF-8') ?>)</a></li>
+            <?php else: ?>
+                <li><a href="/account/login">Login</a></li>
+            <?php endif; ?>
         </ul>
     </div>
 </div>

@@ -227,6 +227,33 @@ class App
             )
         );
 
+        $this->container->singleton(
+            \App\Repositories\SubjectRepository::class,
+            fn() => new \App\Repositories\SubjectRepository(
+                $this->container->get(\App\Core\Database::class)
+            )
+        );
+
+        $this->container->singleton(
+            \App\Services\SubjectService::class,
+            fn() => new \App\Services\SubjectService(
+                $this->container->get(\App\Repositories\SubjectRepository::class)
+            )
+        );
+
+        $this->container->singleton(
+            \App\Controllers\Admin\SubjectController::class,
+            fn() => new \App\Controllers\Admin\SubjectController(
+                $this->container->get(\App\Core\View::class),
+                $this->container->get(\App\Core\Session::class),
+                $this->container->get(\App\Core\Csrf::class),
+                $this->container->get(\App\Services\SubjectService::class),
+                $this->container->get(\App\Services\SubDepartmentService::class),
+                $this->container->get(\App\Core\Request::class),
+                $this->container->get(\App\Core\Response::class)
+            )
+        );
+
 
         $modules = [
             'HeroSlide',
@@ -365,7 +392,9 @@ class App
                 $this->container->get(\App\Core\Csrf::class),
                 $this->container->get(\App\Core\Request::class),
                 $this->container->get(\App\Core\Response::class),
-                $this->container->get(\App\Services\PaperSubmissionService::class)
+                $this->container->get(\App\Services\PaperSubmissionService::class),
+                $this->container->get(\App\Services\DepartmentService::class),
+                $this->container->get(\App\Services\SubDepartmentService::class)
             )
         );
 

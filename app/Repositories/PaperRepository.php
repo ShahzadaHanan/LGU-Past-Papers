@@ -33,8 +33,8 @@ class PaperRepository
     {
         return $this->db->execute(
             "INSERT INTO papers
-                (sub_department_id, exam_type, session, subject_name, slug, paper_image, solution_image, download_file, meta_title, meta_description)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (sub_department_id, exam_type, session, subject_name, slug, paper_image, solution_image, solution_text, download_file, meta_title, meta_description)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 $data['sub_department_id'],
                 $data['exam_type'],
@@ -43,6 +43,7 @@ class PaperRepository
                 $data['slug'],
                 $data['paper_image'],
                 $data['solution_image'] ?? null,
+                $data['solution_text'] ?? null,
                 $data['download_file'] ?? null,
                 $data['meta_title'] ?? null,
                 $data['meta_description'] ?? null,
@@ -50,12 +51,21 @@ class PaperRepository
         );
     }
 
+    public function createAndGetId(array $data): ?int
+    {
+        if (!$this->create($data)) {
+            return null;
+        }
+
+        return (int) $this->db->pdo()->lastInsertId();
+    }
+
     public function update(int $id, array $data): bool
     {
         return $this->db->execute(
             "UPDATE papers SET
                 sub_department_id = ?, exam_type = ?, session = ?, subject_name = ?, slug = ?,
-                paper_image = ?, solution_image = ?, download_file = ?, meta_title = ?, meta_description = ?
+                paper_image = ?, solution_image = ?, solution_text = ?, download_file = ?, meta_title = ?, meta_description = ?
              WHERE id = ?",
             [
                 $data['sub_department_id'],
@@ -65,6 +75,7 @@ class PaperRepository
                 $data['slug'],
                 $data['paper_image'],
                 $data['solution_image'] ?? null,
+                $data['solution_text'] ?? null,
                 $data['download_file'] ?? null,
                 $data['meta_title'] ?? null,
                 $data['meta_description'] ?? null,

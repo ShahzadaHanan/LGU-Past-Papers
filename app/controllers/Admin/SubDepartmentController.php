@@ -39,7 +39,7 @@ class SubDepartmentController extends Controller
         $this->render(
             'admin/sub_departments/index',
             [
-                'title' => 'Sub Departments',
+                'title' => 'Degrees',
                 'subDepartments' => $subDepartments
             ],
             'admin'
@@ -53,7 +53,7 @@ class SubDepartmentController extends Controller
         $this->render(
             'admin/sub_departments/create',
             [
-                'title' => 'Create Sub Department',
+                'title' => 'Create Degree',
                 'departments' => $departments
             ],
             'admin'
@@ -77,7 +77,7 @@ class SubDepartmentController extends Controller
         ) {
             $this->session->flash(
                 'success',
-                'Sub department created successfully.'
+                'Degree created successfully.'
             );
 
             $this->response->redirect(
@@ -89,7 +89,7 @@ class SubDepartmentController extends Controller
 
         $this->session->flash(
             'error',
-            'Unable to create sub department.'
+            'Unable to create degree.'
         );
 
         $this->response->redirect(
@@ -105,7 +105,7 @@ class SubDepartmentController extends Controller
         if (!$subDepartment) {
             $this->session->flash(
                 'error',
-                'Sub department not found.'
+                'Degree not found.'
             );
 
             $this->response->redirect(
@@ -120,7 +120,7 @@ class SubDepartmentController extends Controller
         $this->render(
             'admin/sub_departments/edit',
             [
-                'title' => 'Edit Sub Department',
+                'title' => 'Edit Degree',
                 'subDepartment' => $subDepartment,
                 'departments' => $departments
             ],
@@ -148,7 +148,7 @@ class SubDepartmentController extends Controller
         ) {
             $this->session->flash(
                 'success',
-                'Sub department updated successfully.'
+                'Degree updated successfully.'
             );
 
             $this->response->redirect(
@@ -160,7 +160,7 @@ class SubDepartmentController extends Controller
 
         $this->session->flash(
             'error',
-            'Unable to update sub department.'
+            'Unable to update degree.'
         );
 
         $this->response->redirect(
@@ -182,7 +182,7 @@ class SubDepartmentController extends Controller
 
         $this->session->flash(
             'success',
-            'Sub department deleted successfully.'
+            'Degree deleted successfully.'
         );
 
         $this->response->redirect(

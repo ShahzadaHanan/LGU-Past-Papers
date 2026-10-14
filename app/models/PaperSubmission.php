@@ -15,6 +15,7 @@ class PaperSubmission
         public ?string $description = null,
         public string $image_path = '',
         public string $status = 'pending',
+        public ?int $published_paper_id = null,
         public string $created_at = ''
     ) {
     }
@@ -30,6 +31,7 @@ class PaperSubmission
             description: $data['description'] ?? null,
             image_path: $data['image_path'] ?? '',
             status: $data['status'] ?? 'pending',
+            published_paper_id: isset($data['published_paper_id']) ? (int) $data['published_paper_id'] : null,
             created_at: $data['created_at'] ?? ''
         );
     }

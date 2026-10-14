@@ -8,7 +8,12 @@ use App\Repositories\PaperSubmissionRepository;
 
 class PaperSubmissionService
 {
-    public function __construct(private PaperSubmissionRepository $repository) {}
+    private const VALID_EXAM_TYPES = ['mids', 'finals', 'summer_mids', 'summer_finals'];
+
+    public function __construct(
+        private PaperSubmissionRepository $repository,
+        private PaperService $paperService
+    ) {}
 
     public function getAll(): array { return $this->repository->all(); }
     public function getPending(): array { return $this->repository->getByStatus('pending'); }
@@ -18,15 +23,48 @@ class PaperSubmissionService
     public function delete(int $id): bool { return $this->repository->delete($id); }
 
     /**
-     * Approving a public submission just marks it approved. The admin still
-     * needs to create the actual paper entry under Papers, picking the right
-     * sub-department, exam type and session — the public submission form only
-     * collects a subject name and one image, which isn't enough information
-     * to auto-classify the paper.
+     * Approving a submission classifies and publishes it in one step: the
+     * admin supplies what the public form couldn't collect (degree program,
+     * exam type, session), the submitted image is adopted into the real
+     * Papers catalogue, and the submission is linked to the paper it became
+     * so it can't be published twice.
+     *
+     * @return int The new paper's id.
      */
-    public function approve(int $id): bool
+    public function approveAndPublish(int $submissionId, array $paperData, ?array $solutionImage = null): int
     {
-        return $this->repository->updateStatus($id, 'approved');
+        $submission = $this->repository->find($submissionId);
+
+        if (!$submission) {
+            throw new \Exception('Submission not found.');
+        }
+
+        if ($submission->published_paper_id) {
+            throw new \Exception('This submission has already been published as a paper.');
+        }
+
+        if (
+            empty($paperData['sub_department_id'])
+            || empty($paperData['exam_type'])
+            || empty($paperData['session'])
+            || empty($paperData['subject_name'])
+        ) {
+            throw new \Exception('Please select a degree program, exam type, session and subject name.');
+        }
+
+        if (!in_array($paperData['exam_type'], self::VALID_EXAM_TYPES, true)) {
+            throw new \Exception('Invalid exam type selected.');
+        }
+
+        $paperId = $this->paperService->publishFromSubmission($paperData, $submission->image_path, $solutionImage);
+
+        if (!$paperId) {
+            throw new \Exception('Failed to create the paper record.');
+        }
+
+        $this->repository->markPublished($submissionId, $paperId);
+
+        return $paperId;
     }
 
     public function reject(int $id): bool

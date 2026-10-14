@@ -30,10 +30,14 @@ Pulled from LGU's own live CSS at `admissions.lgu.edu.pk`, not invented:
   on alumni testimonials), `lgu-crest-white.jpg` (dark-background variant).
   All tokens live in `public/assets/css/variables.css` — change the palette
   there, not by hunting hex codes through templates.
-- Positioning: the footer/about copy calls this "a student resource for
-  LGU," not a hard "unofficial, not affiliated" disclaimer — that's a
-  deliberate call given the site uses LGU's real crest; revisit if this
-  platform's relationship with the university's admin changes.
+- Positioning: `app/views/partials/footer.php` now carries a hard
+  disclaimer — "Independent student resource — not an official Lahore
+  Garrison University platform." This note used to say the opposite (copy
+  calling it just "a student resource for LGU," deliberately avoiding a
+  hard disclaimer); that changed at some point and this doc had gone
+  stale — `/graphify --update`'s Surprising Connections caught the drift
+  by diffing CLAUDE.md's claim against the real rendered footer. If you
+  change the disclaimer wording again, update this note in the same commit.
 
 ## Architecture
 
@@ -85,7 +89,104 @@ route-group pattern in `routes/web.php`. Copy `SubDepartmentController` +
 `DepartmentService` as the template: every mutating action starts with
 `if (!$this->verifyCsrf()) { redirect; return; }`, and every service method
 builds an explicit whitelisted array before calling the repository — never
-pass `$this->request->all()` straight through.
+pass `$this->request->all()` straight through. `SubjectController` is a
+second, more recent reference for a module that needs an *extra* dependency
+beyond its own service (it also takes `SubDepartmentService`, for the Degree
+dropdown/filter) — wire it as its own standalone `$this->container->singleton()`
+block right after the module it depends on, same as `SubDepartmentController`
+does for `DepartmentService`, rather than trying to force it into the generic
+`$modules` loop.
+
+### Department → Degree → Subject catalogue (roadmap-driven)
+
+Three levels: `departments` → `sub_departments` (labelled "Degrees" in the
+admin UI and nav — the underlying table/class/route names still say
+`sub_department`, only the user-facing copy changed) → `subjects` (new
+table, migration `011_create_subjects_table.sql`). Subjects are a separate,
+admin-managed course catalogue per degree (`/admin/subjects`, filterable by
+Degree) — independent of `papers.subject_name`, which stays free-text on
+each paper and is not migrated to a `subjects_id` FK.
+
+The real content for this comes from `HomeController::ROADMAPS` /
+`SEMESTER_CURRICULA` (the same constants that power the public `/roadmaps`
+pages, transcribed from lgu.edu.pk's own roadmap pages — see the doc-comment
+on `ROADMAPS`). `database/seed.php` pulls both constants via
+`ReflectionClass` rather than re-typing the data a second time, then:
+1. Upserts every roadmap-listed degree by slug into `sub_departments`
+   (renaming placeholder/generic names to the real roadmap title where an
+   old slug doesn't match, inserting missing ones, always by `department_id`
+   resolved from a real department row) — see the `$degreeSlugRenames` and
+   `$roadmapDeptSlugMap` arrays in `seed.php` for the exact reconciliation
+   table, including the one department-slug mismatch tied to the known
+   duplicate "Department of Computer Science" row (see below).
+2. Flattens each degree's `SEMESTER_CURRICULA` entry (deduped by course
+   title) into real `subjects` rows.
+Both steps are idempotent (safe to re-run) and only touch degrees the real
+roadmap data actually covers — departments/degrees outside that dataset
+(e.g. Islamic Sciences, Physics, Urdu) are left untouched.
+
+**Known duplicate department, still unresolved:** two `departments` rows
+exist for Computer Science — `id=2` (`department-of-computer-science`,
+active, holds all the real content) and `id=17` (`computer-science`,
+deactivated, created by an earlier `seed.php` slug mismatch). `seed.php`'s
+own department-seeding loop still targets the `computer-science` slug (so
+it silently writes to the inactive duplicate on every run) — the roadmap
+reconciliation above works around this with an explicit slug remap rather
+than fixing the root cause. Delete/merge/restore is still the user's call.
+
+### Public visitor accounts (separate from admin auth)
+
+`users` table + `App\Models\User` + `UserAuthService` + `UserAuthController`
+— a second, independent auth system for site visitors (register/login),
+**not** connected to `admins`/`AuthService`/the admin panel in any way:
+different table, different session key (`site_user` vs `auth`), different
+routes (`/account/login`, `/account/register`, `/account/logout`, all under
+`App\Controllers`, not `App\Controllers\Admin`). `Controller::render()`
+injects the logged-in visitor (if any) as `$currentSiteUser` for the `app`
+layout only, the same way it already injects `navDepartments`/`siteSettings`.
+
+The login/signup UI lives inline in `app/views/partials/header.php` as a
+hover/focus dropdown (reusing the same `.dropdown`/`.dropdown-menu` CSS the
+Departments nav already used) with Login/Sign Up tabs
+(`initHeaderAuth()`/`[data-auth-tab]` in `site.js`) rather than a page
+navigation — both forms carry a hidden `redirect_to` field
+(`UserAuthController::redirectTarget()`, open-redirect-guarded to same-origin
+paths only) so submitting from any page lands back on that same page, with
+the result surfaced via a new global flash-message block in
+`layouts/app.php` (right after the header) since the dialog itself has no
+persistent open/closed state across a redirect. The mobile slide-out nav
+gets a plain `/account/login` link instead — the dropdown depends on hover,
+which doesn't exist on touch, matching how the Departments dropdown is
+already mobile-exempt via the separate `<details>`-based mobile nav.
+
+Registration collects name/email/phone/password+confirm/optional profile
+picture (`FileUploadService::image($file, 'user_avatars')`). Google Sign-In
+(Identity Services button + `POST /account/google`, verified via Google's
+`tokeninfo` endpoint — no OAuth SDK dependency) is fully wired but only
+renders when `GOOGLE_CLIENT_ID` is set in `.env` (blank by default — this
+repo has no real Google OAuth client, see `.env.example` for the console
+setup steps). A Google-created account has `password_hash = NULL` and
+`auth_provider = 'google'`; `UserAuthService::login()` guards that case
+before calling `password_verify()`.
+
+Admin visibility: `/admin/site-users` (read-only + delete, "Registered
+Users" in the sidebar — deliberately named to not collide with `/admin/users`,
+which manages *admin* accounts, unrelated and pre-existing) shows every
+visitor's avatar, phone, and sign-up method (Email vs Google). Adding a new
+admin/staff account (as opposed to a visitor account) was already a working
+feature before this — `/admin/users/create`, `AdminUserController`, gated by
+`RoleMiddleware` — nothing new needed there.
+
+### Admin dashboard
+
+`DashboardController` — expanded stat set (departments, degrees, subjects,
+papers, videos, bookings, registered users, admins, newsletter subscribers,
+pending submissions, alumni) plus four charts, all plain CSS (bar rows,
+column bars, `conic-gradient()` donuts in `admin.css`'s `.charts-grid`
+block) — no charting library. If a real chart library ever becomes
+worthwhile, replace incrementally per-chart; the CSS approach was a
+deliberate "no new dependency" call for what's a handful of simple
+aggregates, not a general recommendation against ever adding one.
 
 ## Environment
 
@@ -102,6 +203,8 @@ pass `$this->request->all()` straight through.
   is just a consistent fallback for `seed.php`, not a second account).
   Content: `php database/seed.php` — idempotent, seeds all 15 real LGU
   departments/degrees/papers; safe to re-run.
+- `GOOGLE_CLIENT_ID` (blank by default) — see "Public visitor accounts"
+  above. Setup steps are in `.env.example`.
 
 ## Known Issues — fixed in this pass (kept for history/context)
 
@@ -146,6 +249,28 @@ from `/admin/users`, mass-assignment payload dropped, etc.):
   matches `migrate.php`'s credentials so the fallback path can't create a
   second, different account.
 
+**Found and fixed in later passes (content/admin-panel work, not the
+original security pass):**
+- `app/views/admin/departments/edit.php` only rendered a `name` input —
+  `DepartmentService::update()` unconditionally writes
+  `description`/`meta_title`/`meta_description`/`display_order`/`is_active`
+  from whatever was submitted, so every edit silently wiped those fields
+  back to null/0. Fixed by adding the missing fields (all backend support
+  already existed); this had been quietly destroying department content on
+  every save.
+- `App\Models\SiteSetting`'s constructor had `?int $id = null` before the
+  required `string $setting_key` — a deprecation warning on every
+  instantiation (PHP 8 implicitly treats a required param after an
+  optional one as required, which works but warns). Reordered.
+- `HomeController::paper()` incremented `views_count` in the DB but kept
+  serving the pre-increment value from the already-fetched `$paper` array
+  — the page displayed a stale count until the next visit. Fixed by
+  bumping the in-memory value too.
+- Admin `/admin/papers/create` and `/admin/papers/{id}/edit` fatal-errored
+  (`Cannot use object of type SubDepartment as array`) — the degree
+  `<select>` used `$sd['id']` array syntax against objects returned by
+  `SubDepartmentService::getAllSubDepartments()`. Fixed to `$sd->id`.
+
 ## Remaining, not blocking
 
 - No rate limiting beyond the 3-attempt admin lockout, no CSP/security
@@ -171,6 +296,19 @@ from `/admin/users`, mass-assignment payload dropped, etc.):
 - `video_categories` are seeded per pilot department; no video rows are
   seeded (no fabricated YouTube IDs) — add real lecture videos via
   `/admin/videos`.
+- Google Sign-In (public visitor login) is fully wired but inert until a
+  real `GOOGLE_CLIENT_ID` is set — this repo has no Google Cloud OAuth
+  client configured. See "Public visitor accounts" above.
+- `livepaper.html` at the project root is an untracked (`git status` shows
+  it as `??`), stray saved-HTML snapshot of a rendered `/paper/...` page —
+  not part of the app, not referenced by any route or template. Looks like
+  a leftover debugging artifact from an earlier session's manual
+  verification. Safe to delete whenever someone confirms it's not wanted;
+  left in place here since removing files outside what was asked isn't
+  this session's call to make.
+- Papers admin form fields are `subject_name` free text, not FK'd to the
+  new `subjects` catalogue — see "Department → Degree → Subject catalogue"
+  above for why that wasn't merged.
 
 ## Conventions already followed correctly (keep doing these)
 

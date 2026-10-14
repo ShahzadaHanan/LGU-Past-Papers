@@ -1785,19 +1785,16 @@ class HomeController extends Controller
             return;
         }
 
-        // Fetch papers grouped by exam types
-        $papers = $db->fetchAll("SELECT * FROM papers WHERE sub_department_id = ? ORDER BY session DESC, subject_name ASC", [$degree['id']]);
-        
-        $groupedPapers = [
-            'mids' => [],
-            'finals' => [],
-            'summer_mids' => [],
-            'summer_finals' => []
-        ];
+        // Papers are browsed Subject -> Exam Type -> paper list, so group
+        // that way here rather than flattening everything under one set of
+        // exam-type tabs (the old behaviour mixed every subject together).
+        $papers = $db->fetchAll("SELECT * FROM papers WHERE sub_department_id = ? ORDER BY subject_name ASC, session DESC", [$degree['id']]);
 
+        $bySubject = [];
         foreach ($papers as $paper) {
-            $groupedPapers[$paper['exam_type']][] = $paper;
+            $bySubject[$paper['subject_name']][$paper['exam_type']][] = $paper;
         }
+        ksort($bySubject, SORT_NATURAL | SORT_FLAG_CASE);
 
         $this->render(
             'pages/degree',
@@ -1807,7 +1804,7 @@ class HomeController extends Controller
                     ->description($degree['meta_description'] ?: ('Mid-term and final-term past papers for ' . $degree['name'] . ' at Lahore Garrison University, organised by course.')),
                 'department' => $department,
                 'degree' => $degree,
-                'groupedPapers' => $groupedPapers
+                'bySubject' => $bySubject,
             ]
         );
     }
@@ -1822,8 +1819,12 @@ class HomeController extends Controller
             return;
         }
 
-        // Increment views
+        // Increment views. $paper was fetched before this write, so its
+        // views_count is now one behind what's actually in the row —
+        // bump the in-memory value too, or the page displays a stale
+        // count until the next visit re-reads it.
         $db->execute("UPDATE papers SET views_count = views_count + 1 WHERE id = ?", [$paper['id']]);
+        $paper['views_count'] = (int) $paper['views_count'] + 1;
 
         // Get degree & department for breadcrumbs
         $degree = $db->fetch("SELECT * FROM sub_departments WHERE id = ?", [$paper['sub_department_id']]);
@@ -1831,10 +1832,25 @@ class HomeController extends Controller
 
         // Fetch related papers in the same degree and exam type
         $related = $db->fetchAll("
-            SELECT * FROM papers 
-            WHERE sub_department_id = ? AND exam_type = ? AND id != ? 
+            SELECT * FROM papers
+            WHERE sub_department_id = ? AND exam_type = ? AND id != ?
             LIMIT 4
         ", [$paper['sub_department_id'], $paper['exam_type'], $paper['id']]);
+
+        // Related videos: same degree program, same subject prioritised
+        // first (exact subject match sorts ahead of the rest of the
+        // degree's other lecture videos). Only 3 are shown in the sidebar —
+        // "See More" links out to /lectures pre-filtered to this same
+        // department+degree instead of expanding in place, so it isn't
+        // capped here.
+        $relatedVideos = $db->fetchAll("
+            SELECT v.*, vc.name AS category_name
+            FROM videos v
+            LEFT JOIN video_categories vc ON vc.id = v.category_id
+            WHERE v.is_active = 1 AND v.sub_department_id = ?
+            ORDER BY (v.subject_name = ?) DESC, v.display_order ASC, v.id DESC
+            LIMIT 3
+        ", [$paper['sub_department_id'], $paper['subject_name']]);
 
         $examLabel = str_replace('_', ' ', $paper['exam_type']);
 
@@ -1854,7 +1870,8 @@ class HomeController extends Controller
                 'paper' => $paper,
                 'degree' => $degree,
                 'department' => $department,
-                'related' => $related
+                'related' => $related,
+                'relatedVideos' => $relatedVideos,
             ]
         );
     }

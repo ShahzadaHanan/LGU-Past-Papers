@@ -1,4 +1,4 @@
-<h1>Create Sub Department</h1>
+<h1>Create Degree</h1>
 
 <form
     method="POST"
@@ -77,7 +77,7 @@
     <br>
 
     <button type="submit">
-        Save Sub Department
+        Save Degree
     </button>
 
     <a href="/admin/sub-departments">

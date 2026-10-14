@@ -11,7 +11,9 @@ LGU Admin
 
 <li><a href="/admin/departments">Departments</a></li>
 
-<li><a href="/admin/sub-departments">Sub Departments</a></li>
+<li><a href="/admin/sub-departments">Degrees</a></li>
+
+<li><a href="/admin/subjects">Subjects</a></li>
 
 <li><a href="/admin/papers">Papers</a></li>
 
@@ -34,6 +36,8 @@ LGU Admin
 <li><a href="/admin/class-bookings">Bookings</a></li>
 
 <li><a href="/admin/newsletter-subscribers">Subscribers</a></li>
+
+<li><a href="/admin/site-users">Registered Users</a></li>
 
 <li><a href="/admin/site-settings">Settings</a></li>
 

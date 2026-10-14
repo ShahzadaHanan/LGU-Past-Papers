@@ -17,7 +17,17 @@ function publicPath(string $path = ''): string
 
 function asset(string $path): string
 {
-    return '/assets/' . ltrim($path, '/');
+    $relative = ltrim($path, '/');
+    $absolute = ROOT_PATH . '/public/assets/' . $relative;
+
+    // Cache-bust on the file's own last-modified time so a CSS/JS deploy is
+    // picked up immediately instead of waiting on a browser's cache to
+    // expire — no manual version bump needed, and unaffected files keep
+    // their existing cached copy since their mtime (and so the URL) didn't
+    // change.
+    $version = is_file($absolute) ? filemtime($absolute) : null;
+
+    return '/assets/' . $relative . ($version ? "?v={$version}" : '');
 }
 
 function env(string $key, $default = null)

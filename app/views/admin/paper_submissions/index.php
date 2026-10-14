@@ -17,10 +17,12 @@
 <td><?= htmlspecialchars($s->subject, ENT_QUOTES, 'UTF-8') ?></td>
 <td><span class="badge <?= $s->status === 'approved' ? 'badge-success' : ($s->status === 'rejected' ? 'badge-danger' : 'badge-warning') ?>"><?= ucfirst($s->status) ?></span></td>
 <td>
-<a class="btn-secondary" href="/admin/paper-submissions/<?= (int) $s->id ?>/edit">View</a>
+<?php if ($s->published_paper_id): ?>
+<a class="btn-secondary" href="/admin/papers/<?= (int) $s->published_paper_id ?>/edit">View Paper</a>
+<?php else: ?>
+<a class="btn-secondary" href="/admin/paper-submissions/<?= (int) $s->id ?>/edit">Review</a>
+<?php endif; ?>
 <?php if ($s->status === 'pending'): ?>
-<form method="POST" action="/admin/paper-submissions/<?= (int) $s->id ?>/approve" style="display:inline">
-<?= \App\Helpers\Form::csrf($csrf) ?><button class="btn-primary" type="submit">Approve</button></form>
 <form method="POST" action="/admin/paper-submissions/<?= (int) $s->id ?>/reject" style="display:inline">
 <?= \App\Helpers\Form::csrf($csrf) ?><button class="btn-danger" type="submit">Reject</button></form>
 <?php endif; ?>

@@ -56,23 +56,21 @@
     <?php else: ?>
         <?php foreach ($groupedDepartments as $faculty => $depts): ?>
             <h2 class="faculty-heading"><?= htmlspecialchars($faculty, ENT_QUOTES, 'UTF-8') ?></h2>
-            <div class="grid">
+            <div class="fee-accordion">
                 <?php foreach ($depts as $dept): ?>
-                    <div class="card">
-                        <?php if (!empty($dept['hero_image'])): ?>
-                            <div class="card-img" style="background-image: url('<?= htmlspecialchars($dept['hero_image'], ENT_QUOTES, 'UTF-8') ?>');"></div>
-                        <?php else: ?>
-                            <div class="card-img" style="background:linear-gradient(135deg, var(--primary-color), var(--primary-dark)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:1.3rem;">
-                                <?= htmlspecialchars(mb_substr($dept['name'], 0, 2), ENT_QUOTES, 'UTF-8') ?>
+                    <div class="fee-panel" data-accordion>
+                        <button type="button" class="fee-panel__header" data-accordion-toggle>
+                            <span class="fee-panel__title"><?= htmlspecialchars($dept['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <span class="fee-toggle-icon">+</span>
+                        </button>
+                        <div class="fee-panel__panel" data-accordion-panel>
+                            <div class="fee-panel__inner">
+                                <p class="card-meta" style="margin-bottom:10px;"><?= (int) $dept['degree_count'] ?> degree program<?= (int) $dept['degree_count'] === 1 ? '' : 's' ?></p>
+                                <p style="color:var(--text-muted); line-height:1.7; margin-bottom:18px;">
+                                    <?= htmlspecialchars(strip_tags($dept['description'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                                <a href="/department/<?= htmlspecialchars($dept['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-accent btn-sm">View Programs</a>
                             </div>
-                        <?php endif; ?>
-                        <div class="card-content">
-                            <h3 class="card-title"><?= htmlspecialchars($dept['name'], ENT_QUOTES, 'UTF-8') ?></h3>
-                            <p class="card-meta"><?= (int) $dept['degree_count'] ?> degree program<?= (int) $dept['degree_count'] === 1 ? '' : 's' ?></p>
-                            <p class="card-text">
-                                <?= htmlspecialchars(mb_strimwidth(strip_tags($dept['description'] ?? ''), 0, 100, '…'), ENT_QUOTES, 'UTF-8') ?>
-                            </p>
-                            <a href="/department/<?= htmlspecialchars($dept['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-block">Explore Programs</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

@@ -1,10 +1,13 @@
 <?php
 
 use App\Controllers\HomeController;
+use App\Controllers\UserAuthController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DepartmentController;
 use App\Controllers\Admin\SubDepartmentController;
+use App\Controllers\Admin\SubjectController;
+use App\Controllers\Admin\SiteUserController;
 use App\Controllers\Admin\HeroSlideController;
 use App\Controllers\Admin\ContentBlockController;
 use App\Controllers\Admin\VideoCategoryController;
@@ -38,6 +41,14 @@ $router->get('/scholarships', HomeController::class, 'scholarships');
 $router->get('/roadmaps', HomeController::class, 'roadmaps');
 $router->get('/roadmaps/{slug}', HomeController::class, 'roadmapDetail');
 
+// Public site accounts (visitors) — separate from /admin/login.
+$router->get('/account/login', UserAuthController::class, 'showLogin');
+$router->post('/account/login', UserAuthController::class, 'login');
+$router->get('/account/register', UserAuthController::class, 'showRegister');
+$router->post('/account/register', UserAuthController::class, 'register');
+$router->post('/account/google', UserAuthController::class, 'google');
+$router->get('/account/logout', UserAuthController::class, 'logout');
+
 $router->get('/admin/login', LoginController::class, 'index');
 $router->post('/admin/login', LoginController::class, 'login');
 $router->get('/admin/logout', LoginController::class, 'logout');
@@ -66,6 +77,18 @@ $router->post('/admin/sub-departments', SubDepartmentController::class, 'store')
 $router->get('/admin/sub-departments/{id}/edit', SubDepartmentController::class, 'edit');
 $router->post('/admin/sub-departments/{id}', SubDepartmentController::class, 'update');
 $router->post('/admin/sub-departments/{id}/delete', SubDepartmentController::class, 'delete');
+
+// Subjects — the per-degree course catalogue
+$router->get('/admin/subjects', SubjectController::class, 'index');
+$router->get('/admin/subjects/create', SubjectController::class, 'create');
+$router->post('/admin/subjects', SubjectController::class, 'store');
+$router->get('/admin/subjects/{id}/edit', SubjectController::class, 'edit');
+$router->post('/admin/subjects/{id}', SubjectController::class, 'update');
+$router->post('/admin/subjects/{id}/delete', SubjectController::class, 'delete');
+
+// Registered site users (public visitors) — read-only + delete.
+$router->get('/admin/site-users', SiteUserController::class, 'index');
+$router->post('/admin/site-users/{id}/delete', SiteUserController::class, 'delete');
 
 $modules = [
     'hero-slides' => HeroSlideController::class,

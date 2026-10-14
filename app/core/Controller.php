@@ -72,6 +72,7 @@ class Controller
             $shared['navDepartments'] = $data['navDepartments'] ?? $this->navDepartments();
             $shared['siteSettings'] = $data['siteSettings'] ?? $this->siteSettings();
             $shared['announcements'] = $data['announcements'] ?? $this->announcements();
+            $shared['currentSiteUser'] = $this->session->get('site_user');
         }
 
         $this->view->render(

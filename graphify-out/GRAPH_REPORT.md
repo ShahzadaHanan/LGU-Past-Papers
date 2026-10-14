@@ -1,191 +1,244 @@
-# Graph Report - LGU-Past-Papers  (2026-09-10)
+# Graph Report - LGU-Past-Papers  (2026-09-16)
 
 ## Corpus Check
-- Corpus is ~27,427 words - fits in a single context window. You may not need a graph.
+- 150 files · ~96,800 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 811 nodes · 1226 edges · 138 communities (21 shown, 18 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 39 edges (avg confidence: 0.85)
-- Token cost: 65,000 input · 4,000 output
+- 1017 nodes · 1625 edges · 151 communities (27 shown, 35 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 67 edges (avg confidence: 0.85)
+- Token cost: 0 input · 365,377 output
 
 ## Community Hubs (Navigation)
-- Model Base Class
-- Bootstrap & Global Helpers
-- Paper Admin Controller
-- Admin User Controller
-- Paper Submission Controller
-- Class Booking Controller
-- Newsletter Subscriber Controller
-- Validator
-- Site Setting Controller
-- Video Controller
-- Config & Database Core
-- Content Block Controller
-- Hero Slide Controller
-- Sub-Department Controller
-- Video Category Controller
-- Docker Compose Stack
-- Admin Dashboard & Login
-- Router Dispatcher
-- Public Auth Controller
-- Session Management
-- Alumni Testimonial Controller
-- Public Home Controller
-- Composer Config
-- Department Controller
-- Paginator
-- Security Helpers
-- CSRF & Form Helpers
-- README Architecture Concepts
-- Query Builder
-- Project Identity & Architecture
+- Sub Department Module (Repository)
+- Home Module
+- Department Module
+- Newsletter Subscriber Module
+- Admin User Module
+- Announcement Module
+- Class Booking Module
+- Testimonial Module
+- Video Category Module
+- Video Module
+- Container Module
+- Site User
+- Content Block Module
+- Hero Slide Module
+- Subject Module
+- site Module
+- Sub Department Module (Admin)
+- Router Module
+- Site Setting Module (Repository)
+- Paper Module (Admin)
+- Department Module (Admin)
+- livepaper Module
+- User Auth Module
+- Paper Module (Repository)
+- Paper Submission Module (Repository)
+- Site Setting Module (Admin)
+- Model Module
+- Session Module
+- composer Module
+- Response Module
+- Auth Module
+- Alumni Testimonial Module
+- Login Module
+- Paper Module (Service)
+- Paginator Module
+- Paper Submission Module (Service)
+- Cache Module
+- R E A D M E Module
+- Csrf Module
+- docker compose Module
+- Query Builder Module
+- R E A D M E Module 2
+- Config Module
+- R E A D M E Module 3
+- Paper
+- C L A U D E Module
+- C L A U D E
+- student 1
+- R E A D M E Module 4
+- R E A D M E Module 5
+- R E A D M E Module 6
+- R E A D M E Module 7
+- campus hero
 - R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
-- R E A D M E
+- R E A D M E 2
+- R E A D M E 3
+- R E A D M E 4
+- R E A D M E 5
+- R E A D M E 6
+- R E A D M E 7
+- R E A D M E 8
+- R E A D M E 9
 
 ## God Nodes (most connected - your core abstractions)
-1. `Request` - 59 edges
-2. `Response` - 59 edges
-3. `Session` - 55 edges
-4. `Database` - 53 edges
-5. `Csrf` - 42 edges
-6. `Controller` - 40 edges
-7. `AuthService` - 34 edges
-8. `HomeController` - 20 edges
-9. `DepartmentService` - 19 edges
-10. `ClassBookingController` - 15 edges
+1. `Database` - 72 edges
+2. `Controller` - 53 edges
+3. `SeoService` - 29 edges
+4. `HomeController` - 27 edges
+5. `SubDepartmentService` - 24 edges
+6. `FileUploadService` - 23 edges
+7. `AuthService` - 21 edges
+8. `Session` - 18 edges
+9. `VideoController` - 18 edges
+10. `PaperService` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `mysql service (lgu_mysql_v2)` --shares_data_with--> `Database Migrations Runner (database/migrate.php)`  [INFERRED]
-  docker-compose.yml → README.md
-- `Disallow: /login` --conceptually_related_to--> `Authentication System`  [INFERRED]
-  public/robots.txt → README.md
-- `Disallow: /logout` --conceptually_related_to--> `Authentication System`  [INFERRED]
-  public/robots.txt → README.md
-- `Disallow: /admin/` --conceptually_related_to--> `Middleware (Auth/Guest/Role)`  [INFERRED]
-  public/robots.txt → README.md
-- `Disallow: /admin/` --conceptually_related_to--> `Admin Layout`  [INFERRED]
-  public/robots.txt → README.md
+- `"Student Resource" Positioning Rationale (No Hard Disclaimer)` --references--> `Footer Disclaimer ("Independent student resource — not an official... platform")`  [AMBIGUOUS]
+  CLAUDE.md → livepaper.html
+- `livepaper.html — Rendered Past Paper Detail Page` --references--> `LGU Crest (official seal)`  [EXTRACTED]
+  livepaper.html → public/assets/images/brand/lgu-crest.png
+- `auth.php (Auth Layout)` --references--> `LGU Crest (White/Dark-Background Variant)`  [EXTRACTED]
+  app/views/layouts/auth.php → public/assets/images/brand/lgu-crest-white.jpg
+- `Related Lectures Link ("/lectures?category=department-of-computer-science")` --shares_data_with--> `robots.txt Disallow Rules (/admin/, /login, /logout, /*?page=, /*?category=)`  [INFERRED]
+  livepaper.html → public/robots.txt
+- `Campus Hero Photo` --conceptually_related_to--> `variables.css (brand tokens)`  [INFERRED]
+  public/assets/images/brand/campus-hero.jpg → public/assets/css/variables.css
 
 ## Import Cycles
 - None detected.
 
 ## Hyperedges (group relationships)
-- **Local Dev Stack Communicating over lgu-network** — docker_compose_app_service, docker_compose_mysql_service, docker_compose_phpmyadmin_service [EXTRACTED 1.00]
-- **Protected Admin Routes (crawler-blocked + auth-guarded)** — public_robots_admin_disallow, readme_admin_layout, readme_middleware [INFERRED 0.75]
-- **Database Initialization & Migration Flow** — docker_compose_mysql_service, readme_database_migrations, readme_database [INFERRED 0.85]
+- **Docker Compose Services Sharing .env-Sourced DB Credentials** — docker_compose_app_service, docker_compose_mysql_service, docker_compose_phpmyadmin_service, docker_compose_env_vars [INFERRED 0.85]
+- **SEO/Schema.org JSON-LD Pattern (SeoService + Breadcrumb Component)** — claude_seo_service, livepaper_breadcrumb_jsonld, livepaper_learningresource_jsonld [INFERRED 0.85]
 
-## Communities (138 total, 18 thin omitted)
+## Communities (151 total, 35 thin omitted)
 
-### Community 0 - "Model Base Class"
+### Community 0 - "Sub Department Module (Repository)"
+Cohesion: 0.05
+Nodes (12): Database, AlumniTestimonial, self, self, SubDepartment, AlumniTestimonialRepository, SubDepartmentRepository, ActivityLogger (+4 more)
+
+### Community 1 - "Home Module"
+Cohesion: 0.08
+Nodes (8): asset(), basePath(), env(), publicPath(), HomeController, View, self, SeoService
+
+### Community 2 - "Department Module"
 Cohesion: 0.06
-Nodes (8): Model, self, Response, AuthMiddleware, GuestMiddleware, RoleMiddleware, Admin, AuthService
+Nodes (7): UserAuthController, self, Validator, Department, AlumniTestimonialService, DepartmentService, FileUploadService
 
-### Community 1 - "Bootstrap & Global Helpers"
+### Community 3 - "Newsletter Subscriber Module"
+Cohesion: 0.05
+Nodes (8): NewsletterSubscriberController, NewsletterSubscriber, self, NewsletterSubscriberRepository, MailService, NewsletterSubscriberService, NewsletterSubscriber, PHPMailer\PHPMailer\PHPMailer
+
+### Community 4 - "Admin User Module"
 Cohesion: 0.06
-Nodes (13): basePath(), publicPath(), App, Container, CacheService, MailService, self, SeoService (+5 more)
+Nodes (6): AdminUserController, CrudService, Repository, AdminRepository, DepartmentRepository, AdminUserService
 
-### Community 2 - "Paper Admin Controller"
-Cohesion: 0.07
-Nodes (6): PaperController, Slug, Paper, self, PaperRepository, PaperService
+### Community 5 - "Announcement Module"
+Cohesion: 0.08
+Nodes (5): AnnouncementController, Announcement, self, AnnouncementRepository, AnnouncementService
 
-### Community 3 - "Admin User Controller"
-Cohesion: 0.07
-Nodes (5): AdminUserController, CrudService, Repository, AdminRepository, AdminUserService
-
-### Community 4 - "Paper Submission Controller"
-Cohesion: 0.07
-Nodes (5): PaperSubmissionController, PaperSubmission, self, PaperSubmissionRepository, PaperSubmissionService
-
-### Community 5 - "Class Booking Controller"
+### Community 6 - "Class Booking Module"
 Cohesion: 0.07
 Nodes (5): ClassBookingController, ClassBooking, self, ClassBookingRepository, ClassBookingService
 
-### Community 6 - "Newsletter Subscriber Controller"
-Cohesion: 0.07
-Nodes (5): NewsletterSubscriberController, NewsletterSubscriber, self, NewsletterSubscriberRepository, NewsletterSubscriberService
-
-### Community 7 - "Validator"
-Cohesion: 0.09
-Nodes (6): self, Validator, Department, DepartmentRepository, DepartmentService, FileUploadService
-
-### Community 8 - "Site Setting Controller"
+### Community 7 - "Testimonial Module"
 Cohesion: 0.08
-Nodes (5): SiteSettingController, self, SiteSetting, SiteSettingRepository, SiteSettingService
+Nodes (5): TestimonialController, self, Testimonial, TestimonialRepository, TestimonialService
 
-### Community 9 - "Video Controller"
-Cohesion: 0.08
-Nodes (5): VideoController, self, Video, VideoRepository, VideoService
-
-### Community 10 - "Config & Database Core"
+### Community 8 - "Video Category Module"
 Cohesion: 0.09
-Nodes (8): Config, Database, AlumniTestimonial, self, AlumniTestimonialRepository, ActivityLogger, PDO, PDOStatement
+Nodes (6): VideoCategoryController, Slug, self, VideoCategory, VideoCategoryRepository, VideoCategoryService
 
-### Community 11 - "Content Block Controller"
+### Community 9 - "Video Module"
+Cohesion: 0.09
+Nodes (4): self, Video, VideoRepository, VideoService
+
+### Community 10 - "Container Module"
+Cohesion: 0.11
+Nodes (12): App, Container, Csrf, Session, View, Dispatcher, Request, Closure (+4 more)
+
+### Community 12 - "Content Block Module"
 Cohesion: 0.09
 Nodes (5): ContentBlockController, ContentBlock, self, ContentBlockRepository, ContentBlockService
 
-### Community 12 - "Hero Slide Controller"
+### Community 13 - "Hero Slide Module"
 Cohesion: 0.09
 Nodes (5): HeroSlideController, HeroSlide, self, HeroSlideRepository, HeroSlideService
 
-### Community 13 - "Sub-Department Controller"
-Cohesion: 0.09
-Nodes (5): SubDepartmentController, self, SubDepartment, SubDepartmentRepository, SubDepartmentService
+### Community 14 - "Subject Module"
+Cohesion: 0.10
+Nodes (4): self, Subject, SubjectRepository, SubjectService
 
-### Community 14 - "Video Category Controller"
+### Community 15 - "site Module"
 Cohesion: 0.09
-Nodes (5): VideoCategoryController, self, VideoCategory, VideoCategoryRepository, VideoCategoryService
+Nodes (12): initAccordions(), initCountUp(), animate(), initGoogleSignIn(), relay(), renderButtons(), initLecturesFilter(), departmentIdForSlug() (+4 more)
 
-### Community 15 - "Docker Compose Stack"
+### Community 16 - "Sub Department Module (Admin)"
+Cohesion: 0.10
+Nodes (3): SubDepartmentController, SubjectController, SubDepartmentService
+
+### Community 17 - "Router Module"
 Cohesion: 0.12
-Nodes (21): app service (lgu_app_v2), lgu-network (docker network), mysql_data volume, mysql service (lgu_mysql_v2), docker/php/Dockerfile (build context), phpmyadmin service (lgu_phpmyadmin_v2), Disallow: /admin/, Disallow: /login (+13 more)
+Nodes (3): Request, Route, Router
 
-### Community 16 - "Admin Dashboard & Login"
-Cohesion: 0.16
-Nodes (4): DashboardController, LoginController, Controller, View
+### Community 18 - "Site Setting Module (Repository)"
+Cohesion: 0.11
+Nodes (4): self, SiteSetting, SiteSettingRepository, SiteSettingService
 
-### Community 17 - "Router Dispatcher"
-Cohesion: 0.16
-Nodes (3): Dispatcher, Route, Router
+### Community 19 - "Paper Module (Admin)"
+Cohesion: 0.11
+Nodes (3): PaperController, VideoController, NewsletterMailerService
 
-### Community 22 - "Composer Config"
+### Community 21 - "livepaper Module"
+Cohesion: 0.12
+Nodes (16): auth.php (Auth Layout), Brand Identity (Garrison Green / Gold / Poppins / Crest Assets), "Student Resource" Positioning Rationale (No Hard Disclaimer), SeoService / Breadcrumb JSON-LD Pattern, Brand Assets Used (lgu-crest.png, campus-hero.jpg, lgu-crest-white.jpg, Poppins font), BreadcrumbList JSON-LD Block, Related Lectures Link ("/lectures?category=department-of-computer-science"), Footer Disclaimer ("Independent student resource — not an official... platform") (+8 more)
+
+### Community 24 - "Paper Submission Module (Repository)"
+Cohesion: 0.14
+Nodes (3): PaperSubmission, self, PaperSubmissionRepository
+
+### Community 28 - "composer Module"
 Cohesion: 0.13
 Nodes (14): autoload, files, psr-4, description, license, name, App\\, require (+6 more)
 
-### Community 27 - "README Architecture Concepts"
+### Community 29 - "Response Module"
+Cohesion: 0.19
+Nodes (4): self, Response, AuthMiddleware, GuestMiddleware
+
+### Community 37 - "R E A D M E Module"
 Cohesion: 0.29
 Nodes (7): Coding Standards (PSR-12), CRUD Foundation (Repository/CrudService), Department Module, File Upload Service, Query Builder, Slug System, Validator
 
-### Community 29 - "Project Identity & Architecture"
+### Community 39 - "docker compose Module"
+Cohesion: 0.40
+Nodes (6): Docker Compose Local Dev Setup Instructions, Hardcoded Docker Credentials Fixed (Known Issue #9), docker-compose.yml app service (PHP/Apache, :8080), DB credentials read from .env (${DB_ROOT_PASSWORD}, ${DB_DATABASE}, ${DB_USERNAME}, ${DB_PASSWORD}), docker-compose.yml mysql service (MySQL 8.4), docker-compose.yml phpmyadmin service (:8081)
+
+### Community 41 - "R E A D M E Module 2"
+Cohesion: 0.50
+Nodes (4): Authentication System, CSRF Protection, Middleware (Auth/Guest/Role), Security Measures
+
+### Community 43 - "R E A D M E Module 3"
 Cohesion: 0.67
 Nodes (3): Custom MVC Architecture (No Framework), Layered Architecture (Controller-Service-Repository-Database-MySQL), LGU Past Papers & Online Lectures Platform
 
+## Ambiguous Edges - Review These
+- `"Student Resource" Positioning Rationale (No Hard Disclaimer)` → `Footer Disclaimer ("Independent student resource — not an official... platform")`  [AMBIGUOUS]
+  CLAUDE.md · relation: references
+- `LGU Crest (official seal)` → `Favicon (LGU Crest Seal)`  [AMBIGUOUS]
+  public/assets/images/brand/lgu-crest.png · relation: conceptually_related_to
+
 ## Knowledge Gaps
-- **32 isolated node(s):** `name`, `description`, `type`, `license`, `php` (+27 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 448 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **44 isolated node(s):** `Activity Logger`, `Dependency Injection Container`, `Mail Service (PHPMailer/SMTP)`, `Pagination`, `Request` (+39 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 518 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Database` connect `Config & Database Core` to `Model Base Class`, `Bootstrap & Global Helpers`, `Paper Admin Controller`, `Admin User Controller`, `Paper Submission Controller`, `Class Booking Controller`, `Newsletter Subscriber Controller`, `Site Setting Controller`, `Video Controller`, `Content Block Controller`, `Hero Slide Controller`, `Sub-Department Controller`, `Video Category Controller`, `Admin Dashboard & Login`, `Public Home Controller`?**
-  _High betweenness centrality (0.245) - this node is a cross-community bridge._
-- **Why does `Request` connect `Public Auth Controller` to `Paper Admin Controller`, `Admin User Controller`, `Paper Submission Controller`, `Class Booking Controller`, `Newsletter Subscriber Controller`, `Site Setting Controller`, `Video Controller`, `Content Block Controller`, `Hero Slide Controller`, `Sub-Department Controller`, `Video Category Controller`, `Admin Dashboard & Login`, `Router Dispatcher`, `Alumni Testimonial Controller`, `Public Home Controller`, `Department Controller`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
-- **Why does `Response` connect `Model Base Class` to `Paper Admin Controller`, `Admin User Controller`, `Paper Submission Controller`, `Class Booking Controller`, `Newsletter Subscriber Controller`, `Site Setting Controller`, `Video Controller`, `Content Block Controller`, `Hero Slide Controller`, `Sub-Department Controller`, `Video Category Controller`, `Admin Dashboard & Login`, `Public Auth Controller`, `Alumni Testimonial Controller`, `Public Home Controller`, `Department Controller`?**
-  _High betweenness centrality (0.058) - this node is a cross-community bridge._
-- **What connects `name`, `description`, `type` to the rest of the system?**
-  _32 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Model Base Class` be split into smaller, more focused modules?**
-  _Cohesion score 0.06294326241134751 - nodes in this community are weakly interconnected._
-- **Should `Bootstrap & Global Helpers` be split into smaller, more focused modules?**
-  _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
-- **Should `Paper Admin Controller` be split into smaller, more focused modules?**
-  _Cohesion score 0.06882591093117409 - nodes in this community are weakly interconnected._
+- **What is the exact relationship between `"Student Resource" Positioning Rationale (No Hard Disclaimer)` and `Footer Disclaimer ("Independent student resource — not an official... platform")`?**
+  _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
+- **What is the exact relationship between `LGU Crest (official seal)` and `Favicon (LGU Crest Seal)`?**
+  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
+- **Why does `Database` connect `Sub Department Module (Repository)` to `Home Module`, `Newsletter Subscriber Module`, `Admin User Module`, `Announcement Module`, `Class Booking Module`, `Testimonial Module`, `Video Category Module`, `Video Module`, `Container Module`, `Site User`, `Content Block Module`, `Hero Slide Module`, `Subject Module`, `Site Setting Module (Repository)`, `Paper Module (Admin)`, `Paper Module (Repository)`, `Paper Submission Module (Repository)`, `Model Module`, `Login Module`?**
+  _High betweenness centrality (0.299) - this node is a cross-community bridge._
+- **Why does `FileUploadService` connect `Department Module` to `Home Module`, `Paper Module (Service)`, `Testimonial Module`, `Container Module`, `Site User`, `Hero Slide Module`, `Department Module (Admin)`, `Paper Module (Repository)`?**
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `Controller` connect `Site User` to `Login Module`, `Home Module`, `Department Module`, `Newsletter Subscriber Module`, `Admin User Module`, `Announcement Module`, `Class Booking Module`, `Testimonial Module`, `Video Category Module`, `Sub Department Module (Repository)`, `Container Module`, `Content Block Module`, `Hero Slide Module`, `Sub Department Module (Admin)`, `Paper Module (Admin)`, `Department Module (Admin)`, `Site Setting Module (Admin)`, `Alumni Testimonial Module`?**
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
+- **Are the 4 inferred relationships involving `Database` (e.g. with `.registerCoreServices()` and `.announcements()`) actually correct?**
+  _`Database` has 4 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 17 inferred relationships involving `SeoService` (e.g. with `.aboutLgu()` and `.aboutUs()`) actually correct?**
+  _`SeoService` has 17 INFERRED edges - model-reasoned connections that need verification._

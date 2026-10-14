@@ -1,7 +1,7 @@
-<h1>Sub Departments</h1>
+<h1>Degrees</h1>
 
 <a href="/admin/sub-departments/create">
-    Create Sub Department
+    Create Degree
 </a>
 
 <br><br>
@@ -26,7 +26,7 @@
 
         <tr>
             <td colspan="5">
-                No sub departments found.
+                No degrees found.
             </td>
         </tr>
 
@@ -72,7 +72,7 @@
                         method="POST"
                         action="/admin/sub-departments/<?= (int) $subDepartment->id ?>/delete"
                         style="display:inline"
-                        onsubmit="return confirm('Delete Sub Department?')"
+                        onsubmit="return confirm('Delete Degree?')"
                     >
 
                         <?= \App\Helpers\Form::csrf($csrf) ?>

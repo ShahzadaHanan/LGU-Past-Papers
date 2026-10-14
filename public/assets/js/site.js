@@ -217,12 +217,39 @@
         });
     }
 
-    /* ---- Nested "+"/"-" accordions (fee structure page: Group -> Faculty).
-       max-height transition needs a real pixel value, not 'none', so JS
-       measures scrollHeight on open/close. Nested panels also resize any
-       still-open ancestor panel after their own transition finishes, so
-       expanding a faculty inside an already-open group doesn't get
-       clipped by the group's now-stale max-height. ---- */
+    /* ---- Nested "+"/"-" accordions (fee structure page: Group -> Faculty;
+       degree page: Subject -> Exam Type). max-height transition needs a
+       real pixel value, not 'none', so JS measures scrollHeight on
+       open/close.
+
+       Nesting bug this guards against: opening an inner panel (e.g. Mid-
+       Term) grows its own height fine, but a still-open OUTER panel (e.g.
+       the Subject) had its max-height fixed to whatever it measured
+       *before* the inner panel expanded — so the outer clips the now-
+       taller content, and overflow:hidden means there's no scrollbar to
+       fall back on either. Fix: whenever a panel opens, every still-open
+       ancestor panel gets its max-height lifted to a value tall enough
+       that it can never be the limiting factor — the box still only
+       renders as tall as its actual content (max-height is a ceiling, not
+       a forced size), so this doesn't change anything for ancestors whose
+       content didn't grow, and un-clips the ones that did, in sync with
+       the inner panel's own opening animation rather than one transition
+       staggered after another. ---- */
+    var ACCORDION_UNCAPPED_HEIGHT = 10000;
+
+    function liftOpenAncestorPanels(panel) {
+        var item = panel.closest('[data-accordion]');
+        var ancestorPanel = item && item.parentElement ? item.parentElement.closest('[data-accordion-panel]') : null;
+
+        while (ancestorPanel) {
+            if (ancestorPanel.classList.contains('open')) {
+                ancestorPanel.style.maxHeight = ACCORDION_UNCAPPED_HEIGHT + 'px';
+            }
+            var ancestorItem = ancestorPanel.closest('[data-accordion]');
+            ancestorPanel = ancestorItem && ancestorItem.parentElement ? ancestorItem.parentElement.closest('[data-accordion-panel]') : null;
+        }
+    }
+
     function initAccordions() {
         var toggles = document.querySelectorAll('[data-accordion-toggle]');
         if (!toggles.length) return;
@@ -247,6 +274,7 @@
                     panel.classList.add('open');
                     btn.classList.add('open');
                     panel.style.maxHeight = panel.scrollHeight + 'px';
+                    liftOpenAncestorPanels(panel);
                 }
             });
         });
@@ -312,6 +340,90 @@
         populateSubjects(subjectSelect.dataset.selected);
     }
 
+    /* ---- Header login/signup dialog — Login/Sign Up tab switching ---- */
+    function initHeaderAuth() {
+        var tabs = document.querySelectorAll('[data-auth-tab]');
+        if (!tabs.length) return;
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var target = tab.getAttribute('data-auth-tab');
+                var group = tab.closest('.header-auth');
+                if (!group) return;
+
+                group.querySelectorAll('[data-auth-tab]').forEach(function (t) {
+                    t.classList.remove('active');
+                });
+                group.querySelectorAll('[data-auth-panel]').forEach(function (p) {
+                    p.hidden = true;
+                });
+
+                tab.classList.add('active');
+                var panel = group.querySelector('[data-auth-panel="' + target + '"]');
+                if (panel) panel.hidden = false;
+            });
+        });
+    }
+
+    /* ---- Google Sign-In (Identity Services) for the header dialog ----
+       Only runs at all when the server rendered a [data-google-signin]
+       container with a real client id (GOOGLE_CLIENT_ID configured) — see
+       header.php. Renders Google's own button, then relays the returned
+       ID token to our backend as a normal form POST (so the flow works
+       the same as the rest of this login dialog, no fetch/JSON needed). */
+    function initGoogleSignIn() {
+        var containers = document.querySelectorAll('[data-google-signin]');
+        if (!containers.length) return;
+
+        var clientId = containers[0].getAttribute('data-client-id');
+        if (!clientId) return;
+
+        function relay(response) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/account/google';
+
+            var fields = {
+                _token: containers[0].getAttribute('data-csrf'),
+                redirect_to: containers[0].getAttribute('data-redirect'),
+                credential: response.credential
+            };
+
+            Object.keys(fields).forEach(function (name) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = fields[name] || '';
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function renderButtons() {
+            window.google.accounts.id.initialize({
+                client_id: clientId,
+                callback: relay
+            });
+            containers.forEach(function (el) {
+                window.google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', width: 240 });
+            });
+        }
+
+        if (window.google && window.google.accounts) {
+            renderButtons();
+            return;
+        }
+
+        var script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = renderButtons;
+        document.head.appendChild(script);
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         initThemeToggle();
         initMobileNav();
@@ -324,5 +436,7 @@
         initShowMore();
         initAccordions();
         initLecturesFilter();
+        initHeaderAuth();
+        initGoogleSignIn();
     });
 })();

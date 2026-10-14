@@ -5,11 +5,11 @@
     <?= \App\Helpers\Form::csrf($csrf) ?>
 
     <div class="form-group">
-        <label>Sub-Department</label>
+        <label>Degree</label>
         <select name="sub_department_id" required>
             <option value="">Select sub-department</option>
             <?php foreach ($subDepartments as $sd): ?>
-                <option value="<?= (int) $sd['id'] ?>"><?= htmlspecialchars($sd['name'], ENT_QUOTES, 'UTF-8') ?></option>
+                <option value="<?= (int) $sd->id ?>"><?= htmlspecialchars($sd->name, ENT_QUOTES, 'UTF-8') ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -42,6 +42,11 @@
     <div class="form-group">
         <label>Solution Image (optional)</label>
         <input type="file" name="solution_image" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <label>Solution Text (optional)</label>
+        <textarea name="solution_text" rows="6" placeholder="Type the worked solution here — shown as text on the paper page, in addition to or instead of a solution image."></textarea>
     </div>
 
     <div class="form-group">

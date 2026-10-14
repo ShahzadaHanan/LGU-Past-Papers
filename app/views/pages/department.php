@@ -48,20 +48,25 @@
         <h2>Choose your program</h2>
     </div>
 
-    <div class="grid">
+    <div class="fee-accordion">
         <?php if (empty($degrees)): ?>
             <div class="empty-state">No degree programs listed under this department yet — check back soon.</div>
         <?php else: ?>
             <?php foreach ($degrees as $degree): ?>
-                <div class="card">
-                    <div class="card-content">
-                        <h3 class="card-title"><?= htmlspecialchars($degree['name'], ENT_QUOTES, 'UTF-8') ?></h3>
-                        <p class="card-text">
-                            <?= htmlspecialchars(mb_strimwidth(strip_tags($degree['description'] ?? ''), 0, 110, '…'), ENT_QUOTES, 'UTF-8') ?>
-                        </p>
-                        <a href="/department/<?= htmlspecialchars($department['slug'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars($degree['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-block">
-                            View Past Papers
-                        </a>
+                <div class="fee-panel" data-accordion>
+                    <button type="button" class="fee-panel__header" data-accordion-toggle>
+                        <span class="fee-panel__title"><?= htmlspecialchars($degree['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="fee-toggle-icon">+</span>
+                    </button>
+                    <div class="fee-panel__panel" data-accordion-panel>
+                        <div class="fee-panel__inner">
+                            <p style="color:var(--text-muted); line-height:1.7; margin-bottom:18px;">
+                                <?= htmlspecialchars(strip_tags($degree['description'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                            </p>
+                            <a href="/department/<?= htmlspecialchars($department['slug'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars($degree['slug'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-accent btn-sm">
+                                View Papers
+                            </a>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -1,4 +1,4 @@
-<h1>Edit Sub Department</h1>
+<h1>Edit Degree</h1>
 
 <form
     method="POST"
@@ -91,7 +91,7 @@
     <br>
 
     <button type="submit">
-        Update Sub Department
+        Update Degree
     </button>
 
     <a href="/admin/sub-departments">

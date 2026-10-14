@@ -14,7 +14,7 @@
         <thead>
         <tr>
             <th>Subject</th>
-            <th>Sub-Department</th>
+            <th>Degree</th>
             <th>Exam Type</th>
             <th>Session</th>
             <th>Views</th>

@@ -7,8 +7,8 @@ namespace App\Models;
 class SiteSetting
 {
     public function __construct(
-        public ?int $id = null,
         public string $setting_key,
+        public ?int $id = null,
         public ?string $setting_value = null,
         public string $created_at = '',
         public string $updated_at = ''
