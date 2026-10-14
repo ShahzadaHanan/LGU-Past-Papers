@@ -5,3 +5,8 @@
 Thumbs.db
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# Claude Code: machine-local settings and runtime files
+/.claude/settings.local.json
+/.claude/scheduled_tasks.lock
+/.playwright-mcp/

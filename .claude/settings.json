@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(py --version)",
+      "Bash(curl -s -i \"http://localhost:8080/newsletter/subscribe\" -X POST -d \"email=test@example.com\")",
+      "Bash(curl -s -i \"http://localhost:8080/newsletter/subscribe\" -X POST -d \"email=test@example.com\" -o /dev/null -w \"Location-follows: %{redirect_url}\\\\nHTTP: %{http_code}\\\\n\")",
+      "Bash(docker exec *)"
+    ]
+  }
+}
